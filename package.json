@@ -1,0 +1,24 @@
+{
+  "name": "angular-echarts",
+  "version": "0.0.1",
+  "description": "angular baidu echart directives",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/wangshijun/angular-echarts.git"
+  },
+  "keywords": [
+    "angular",
+    "baidu",
+    "echarts"
+  ],
+  "author": "wangshijun",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/wangshijun/angular-echarts/issues"
+  },
+  "homepage": "https://github.com/wangshijun/angular-echarts"
+}
