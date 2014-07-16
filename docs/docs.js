@@ -89,8 +89,15 @@
         };
 
         $scope.data = [ pageload ];
-        $scope.multiple = [pageload, firstPaint ];
+    });
 
+    app.controller('GaugeChartController', function ($scope) {
+
+        $scope.config = {
+            debug: true,
+        };
+
+        $scope.data = [ pageload ];
     });
 
 })();
