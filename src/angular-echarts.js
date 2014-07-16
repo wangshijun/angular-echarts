@@ -1,107 +1,197 @@
 (function () {
-'use strict';
+    'use strict';
 
-    angular.module('angular-echarts', []).directive('lineChart', function () {
+    var defaultWidth = 400;
+    var defaultHeight = 300;
 
-        function getAxisTicks(data, config) {
-            var ticks = [];
-            angular.forEach(data[0].datapoints, function (datapoint) {
-                ticks.push(datapoint.x);
-            });
-
-            return {
-                type: 'category',
-                boundaryGap : false,
-                data: ticks,
-            };
-        }
-
-        function getSeries(data, config) {
-            var series = [];
-            angular.forEach(data, function (serie) {
-                var datapoints = [];
-                angular.forEach(serie.datapoints, function (datapoint) {
-                    datapoints.push(datapoint.y);
-                });
-                series.push({
-                    type: 'line',
-                    name: serie.name,
-                    data: datapoints,
-                });
-            });
-            return series;
-        }
-
-        function getLegends(data, config) {
-            var legends = [];
-            angular.forEach(data, function (serie) {
-                legends.push(serie.name);
-            });
-            return legends;
-        }
-
-        function getOptions(data, config) {
-            return {
-                title : {
-                    text: config.title,
-                    subtext: config.subtitle || '',
-                },
-                tooltip : {
-                    trigger: config.tooltip || 'axis',
-                },
-                legend: {
-                    data: config.legend || getLegends(data),
-                },
-                toolbox: {
-                    show : false,
-                },
-                calculable: false,
-                xAxis: [ getAxisTicks(data, config) ],
-                yAxis: [ { type : 'value' } ],
-                series: getSeries(data, config),
-            };
-        }
+    /**
+     * get x axis ticks from the 1st serie
+     */
+    function getAxisTicks(data, config, type) {
+        var ticks = [];
+        angular.forEach(data[0].datapoints, function (datapoint) {
+            ticks.push(datapoint.x);
+        });
 
         return {
-            restrict: 'E',
-            template: '<div></div>',
-            scope: {
-                config: "=config",
-                data: "=data"
+            type: 'category',
+            boundaryGap : false,
+            data: ticks,
+        };
+    }
+
+    /**
+     * get series config
+     */
+    function getSeries(data, config, type) {
+        var series = [];
+        angular.forEach(data, function (serie) {
+            var datapoints = [];
+            angular.forEach(serie.datapoints, function (datapoint) {
+                datapoints.push(datapoint.y);
+            });
+
+            var conf = {
+                type: type || 'line',
+                name: serie.name,
+                data: datapoints,
+            };
+
+            // area chart is actually line chart with special itemStyle
+            if (type === 'area') {
+                conf.type = 'line';
+                conf.itemStyle = {
+                    normal: { areaStyle: { type: 'default'}}
+                };
+            }
+
+            // if stack set to true
+            if (config.stack) {
+                conf.stack = 'total';
+            }
+
+            series.push(conf);
+        });
+
+        return series;
+    }
+
+    /**
+     * get legends from data series
+     */
+    function getLegends(data, config, type) {
+        var legends = [];
+        angular.forEach(data, function (serie) {
+            legends.push(serie.name);
+        });
+        return legends;
+    }
+
+    /**
+     * get chart options object
+     */
+    function getOptions(data, config, type) {
+        // merge default config
+        config = angular.extend({
+            showXAxis: true,
+            showYAxis: true,
+            showLegend: true,
+        }, config);
+
+        // basic config
+        var options = {
+            title : {
+                text: config.title,
+                subtext: config.subtitle || '',
             },
-            link: function (scope, element, attrs) {
-                var dom  = element.find('div')[0];
-                var width = attrs.width || 400;
-                var height = attrs.height || 300;
+            tooltip : {
+                trigger: config.tooltip || (type === 'bar' ? 'item' : 'axis'),
+            },
+            legend: {
+                data: config.legend || getLegends(data, config, type),
+            },
+            toolbox: {
+                show : false,
+            },
+            calculable: false,
+            xAxis: [ getAxisTicks(data, config, type) ],
+            yAxis: [ { type : 'value' } ],
+            series: getSeries(data, config, type),
+        };
 
-                dom.style.width = width + 'px';
-                dom.style.height = height + 'px';
+        if (!config.showXAxis) {
+            angular.forEach(options.xAxis, function (axis) {
+                axis.axisLine = { show: false };
+                axis.axisLabel = { show: false };
+                axis.axisTick = { show: false };
+            });
+        }
 
-                var chart = echarts.init(dom, getTheme(scope.config.theme || 'macarons'));
+        if (!config.showYAxis) {
+            angular.forEach(options.yAxis, function (axis) {
+                axis.axisLine = { show: false };
+                axis.axisLabel = { show: false };
+                axis.axisTick = { show: false };
+            });
+        }
 
-                setOptions();
+        if (!config.showLegend) {
+            options.legend.data = [];
+        }
 
-                // update when charts config changes
-                scope.$watch(function () { return scope.config; }, function (value) {
-                    if (value) { setOptions(); }
-                });
+        return options;
+    }
 
-                // update when charts data changes
-                scope.$watch(function () { return scope.data; }, function (value) {
-                    if (value) { setOptions(); }
-                });
+    function getLinkFunction(type) {
+        return function (scope, element, attrs) {
+            var dom  = element.find('div')[0];
+            var width = attrs.width || defaultWidth;
+            var height = attrs.height || defaultHeight;
 
-                function setOptions() {
-                    var options = getOptions(scope.data, scope.config);
-                    chart.setOption(options);
-                    if (scope.config.debug) {
-                        console.log(options);
-                    }
+            dom.style.width = width + 'px';
+            dom.style.height = height + 'px';
+
+            var chart = echarts.init(dom, getTheme(scope.config.theme || 'macarons'));
+
+            setOptions();
+
+            // update when charts config changes
+            scope.$watch(function () { return scope.config; }, function (value) {
+                if (value) { setOptions(); }
+            });
+
+            // update when charts data changes
+            scope.$watch(function () { return scope.data; }, function (value) {
+                if (value) { setOptions(); }
+            });
+
+            function setOptions() {
+                var options = getOptions(scope.data, scope.config, type);
+                chart.setOption(options);
+                if (scope.config.debug) {
+                    console.log(options);
                 }
             }
         };
+    }
 
-    });
+    /**
+     * add directives
+     */
+    angular.module('angular-echarts', [])
+        .directive('lineChart', function () {
+            return {
+                restrict: 'EA',
+                template: '<div></div>',
+                scope: {
+                    config: "=config",
+                    data: "=data"
+                },
+                link: getLinkFunction('line')
+            };
+        })
+        .directive('barChart', function () {
+            return {
+                restrict: 'EA',
+                template: '<div></div>',
+                scope: {
+                    config: "=config",
+                    data: "=data"
+                },
+                link: getLinkFunction('bar')
+            };
+        })
+        .directive('areaChart', function () {
+            return {
+                restrict: 'EA',
+                template: '<div></div>',
+                scope: {
+                    config: "=config",
+                    data: "=data"
+                },
+                link: getLinkFunction('area')
+            };
+        });
 
     // posible themes: infographic macarons shine dark blue green red gray default
     // steal from: echarts/doc/example/theme/macarons.js

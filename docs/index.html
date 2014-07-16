@@ -22,12 +22,17 @@
     <div class="row">
         <div class="col-md-3" ng-controller="LineChartController">
             <line-chart config="config" data="data" width="400" height="300"></line-chart>
+            <line-chart config="config" data="multiple" width="400" height="300"></line-chart>
         </div>
 
-        <div class="col-md-3" ng-controller="LineChartController">
+        <div class="col-md-3" ng-controller="BarChartController">
+            <bar-chart config="config" data="data" width="400" height="300"></bar-chart>
+            <bar-chart config="config" data="multiple" width="400" height="300"></bar-chart>
         </div>
 
-        <div class="col-md-3" ng-controller="LineChartController">
+        <div class="col-md-3" ng-controller="AreaChartController">
+            <area-chart config="config" data="data" width="400" height="300"></area-chart>
+            <area-chart config="config" data="multiple" width="400" height="300"></area-chart>
         </div>
 
         <div class="col-md-3" ng-controller="LineChartController">
