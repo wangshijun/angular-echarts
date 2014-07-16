@@ -42,7 +42,7 @@
             // subtitle: 'Line Chart Subtitle',
             debug: true,
             showXAxis: true,
-            showYAxis: true,
+            showYAxis: false,
             showLegend: false,
             stack: false,
         };

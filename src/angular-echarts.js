@@ -99,6 +99,10 @@
             toolbox: {
                 show : false,
             },
+            grid: {     // 充分利用控件展示图表
+                x: 0,
+                y: 10,
+            },
             calculable: false,
             xAxis: [ getAxisTicks(data, config, type) ],
             yAxis: [ { type : 'value' } ],
