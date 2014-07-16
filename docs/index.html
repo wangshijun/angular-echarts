@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>angular echarts directives</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+
+    <script src="../vendor/baidu-echarts/build/echarts-plain.js"></script>
+    <script src="../vendor/angular/angular.min.js"></script>
+    <script src="../src/angular-echarts.js"></script>
+    <script src="../docs/docs.js"></script>
+
+</head>
+
+<body class="ng-cloak" ng-app="docs">
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-3" ng-controller="LineChartController">
+            <line-chart config="config" data="data" width="400" height="300"></line-chart>
+        </div>
+
+        <div class="col-md-3" ng-controller="LineChartController">
+        </div>
+
+        <div class="col-md-3" ng-controller="LineChartController">
+        </div>
+
+        <div class="col-md-3" ng-controller="LineChartController">
+        </div>
+    </div>
+</div>
+
+</body>
+
+</html>
+
