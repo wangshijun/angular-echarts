@@ -351,7 +351,14 @@
             categoryAxis: {
                 axisLine: {            // 坐标轴线
                     lineStyle: {       // 属性lineStyle控制线条样式
-                        color: '#008acd'
+                        color: '#008acd',
+                        width: 1,
+                    }
+                },
+                axisTick: {            // 坐标轴线
+                    lineStyle: {       // 属性lineStyle控制线条样式
+                        color: '#008acd',
+                        width: 1,
                     }
                 },
                 splitLine: {           // 分隔线
@@ -365,7 +372,14 @@
             valueAxis: {
                 axisLine: {            // 坐标轴线
                     lineStyle: {       // 属性lineStyle控制线条样式
-                        color: '#008acd'
+                        color: '#008acd',
+                        width: 1,
+                    }
+                },
+                axisTick: {            // 坐标轴线
+                    lineStyle: {       // 属性lineStyle控制线条样式
+                        color: '#008acd',
+                        width: 1,
                     }
                 },
                 splitArea : {
