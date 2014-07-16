@@ -1,10 +1,6 @@
 'use strict';
 
-var gulp    = require('gulp'),
-    path    = require('path'),
-    inject  = require('gulp-inject'),
-    stream  = require('event-stream');
-
+var gulp    = require('gulp');
 var plugins = require('gulp-load-plugins')();
 
 /**
