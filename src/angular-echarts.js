@@ -125,10 +125,6 @@
             delete options.legend;
         }
 
-        if (!config.title) {
-            delete options.title;
-        }
-
         return options;
     }
 
