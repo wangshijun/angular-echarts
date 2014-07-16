@@ -72,7 +72,7 @@ function getLinkFunction($http, theme, util, type) {
 
         function setOptions() {
             if (scope.data && scope.config) {
-                var options = getOptions(scope.data, scope.config, type);
+                var options = getOptions(scope._data || scope.data, scope.config, type);
                 if (scope.config.debug) {
                     console.log(options);
                 }
@@ -90,7 +90,7 @@ function getLinkFunction($http, theme, util, type) {
                 .success(function (response) {
                     chart.hideLoading();
                     if (response.data) {
-                        scope.data = response.data;
+                        scope._data = response.data;
                         setOptions();
                     } else {
                         throw new Error('angular-echarts: no data loaded from ' + attrs.url);
@@ -112,7 +112,7 @@ function getLinkFunction($http, theme, util, type) {
         });
 
         // update when charts data changes
-        scope.$watch(function () { return scope.data; }, function (value) {
+        scope.$watch(function () { return scope._data || scope.data; }, function (value) {
             if (value) { setOptions(); }
         });
 

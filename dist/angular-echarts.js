@@ -65,7 +65,7 @@ function getLinkFunction($http, theme, util, type) {
         }
         function setOptions() {
             if (scope.data && scope.config) {
-                var options = getOptions(scope.data, scope.config, type);
+                var options = getOptions(scope._data || scope.data, scope.config, type);
                 if (scope.config.debug) {
                     console.log(options);
                 }
@@ -80,7 +80,7 @@ function getLinkFunction($http, theme, util, type) {
             $http.get(attrs.url).success(function (response) {
                 chart.hideLoading();
                 if (response.data) {
-                    scope.data = response.data;
+                    scope._data = response.data;
                     setOptions();
                 } else {
                     throw new Error('angular-echarts: no data loaded from ' + attrs.url);
@@ -102,7 +102,7 @@ function getLinkFunction($http, theme, util, type) {
         });
         // update when charts data changes
         scope.$watch(function () {
-            return scope.data;
+            return scope._data || scope.data;
         }, function (value) {
             if (value) {
                 setOptions();
@@ -401,7 +401,7 @@ angular.module('angular-echarts.util', []).factory('util', function () {
  * theme services
  * posible themes: infographic macarons shine dark blue green red gray default
  */
-angular.module('angular-echarts.theme', ['angular-echarts.theme']).factory('theme', ['infographic', 'macarons', 'shine', 'dark', 'blue', 'green', 'red', function (infographic, macarons, shine, dark, blue, green, red, grey) {
+angular.module('angular-echarts.theme', []).factory('theme', ['infographic', 'macarons', 'shine', 'dark', 'blue', 'green', 'red', function (infographic, macarons, shine, dark, blue, green, red, grey) {
     var themes = {
         infographic: infographic,
         macarons: macarons,

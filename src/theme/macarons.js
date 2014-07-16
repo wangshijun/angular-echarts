@@ -4,6 +4,7 @@
  * macarons theme
  */
 angular.module('angular-echarts.theme').factory('macarons', function () {
+
     return {
         // 默认色板
         color: [
