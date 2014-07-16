@@ -13,9 +13,12 @@ gulp.task('build', function () {
         .pipe(plugins.clean());
 
     // build js
-    var appJs = gulp.src('src/*.js')
-        .pipe(plugins.concat('angular-echarts.js'))
+    var appJs = gulp.src(['src/directive.js', 'src/util.js', 'src/theme.css', 'src/theme/*.js'])
         .pipe(plugins.removeUseStrict())
+        .pipe(plugins.concat('angular-echarts.js'))
+        .pipe(plugins.wrap('(function () {<%= contents %>})();'))
+        .pipe(gulp.dest('dist'))
+        .pipe(plugins.rename({ suffix: '.min'}))
         .pipe(plugins.uglify({ outSourceMap: true, mangle: true, report: 'gzip' }))
         .pipe(plugins.size({ showFiles: true }))
         .pipe(gulp.dest('dist'))
