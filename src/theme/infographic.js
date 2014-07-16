@@ -3,7 +3,7 @@
 /**
  * infographic theme
  */
-angular.module('angular-echarts.theme', []).factory('infographic', function () {
+angular.module('angular-echarts.theme').factory('infographic', function () {
 
     return {
         // 默认色板
@@ -305,11 +305,11 @@ angular.module('angular-echarts.theme', []).factory('infographic', function () {
                 color: '#fff'
             },
             title: {
-              offsetCenter: [0, -20],       // x, y，单位px
-              textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
-                color: 'auto',
-                fontSize: 20
-              }
+                offsetCenter: [0, -20],       // x, y，单位px
+                textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+                    color: 'auto',
+                    fontSize: 20
+                }
             },
             detail: {
                 offsetCenter: [0, 0],       // x, y，单位px

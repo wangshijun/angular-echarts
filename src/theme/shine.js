@@ -3,7 +3,7 @@
 /**
  * shine theme
  */
-angular.module('angular-echarts.theme', []).factory('shine', function () {
+angular.module('angular-echarts.theme').factory('shine', function () {
 
     return {
         // 默认色板

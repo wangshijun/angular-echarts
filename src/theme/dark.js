@@ -3,7 +3,7 @@
 /**
  * dark theme
  */
-angular.module('angular-echarts.theme', []).factory('dark', function () {
+angular.module('angular-echarts.theme').factory('dark', function () {
 
     return {
         // 全图默认背景

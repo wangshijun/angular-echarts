@@ -3,7 +3,7 @@
 /**
  * blue theme
  */
-angular.module('angular-echarts.theme', []).factory('blue', function () {
+angular.module('angular-echarts.theme').factory('blue', function () {
 
     return {
         // 默认色板
