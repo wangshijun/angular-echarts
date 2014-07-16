@@ -1,8 +1,8 @@
 (function () {
     'use strict';
 
-    var defaultWidth = 400;
-    var defaultHeight = 300;
+    var defaultWidth = 360;
+    var defaultHeight = 240;
 
     /**
      * get x axis ticks from the 1st serie
@@ -36,7 +36,6 @@
                 datapoints.push(datapoint.y);
             });
 
-
             var conf = {
                 type: type || 'line',
                 name: serie.name,
@@ -57,7 +56,7 @@
                     splitNumber: 10,       // 分割段数，默认为5
                     axisLine: {            // 坐标轴线
                         lineStyle: {       // 属性lineStyle控制线条样式
-                            color: [[0.2, '#228b22'], [0.8, '#48b'], [1, '#ff4500']], 
+                            color: [[0.2, '#228b22'], [0.8, '#48b'], [1, '#ff4500']],
                             width: 8
                         }
                     },
@@ -182,7 +181,7 @@
             });
         }
 
-        return angular.extend(legend, config.legend || {})
+        return angular.extend(legend, config.legend || {});
     }
 
     /**
@@ -287,7 +286,13 @@
         return options;
     }
 
-    function getLinkFunction(type) {
+    /**
+     * generate directive link function
+     *
+     * @param {Service} $http, http service to make ajax requests from angular
+     * @param {String} type, chart type
+     */
+    function getLinkFunction($http, type) {
         return function (scope, element, attrs) {
             var dom  = element.find('div')[0];
             var width = attrs.width || defaultWidth;
@@ -298,7 +303,45 @@
 
             var chart = echarts.init(dom, getTheme(scope.config.theme || 'macarons'));
 
-            setOptions();
+            function setOptions() {
+                if (scope.data && scope.config) {
+                    var options = getOptions(scope.data, scope.config, type);
+                    if (scope.config.debug) {
+                        console.log(options);
+                    }
+                    chart.setOption(options);
+                }
+            }
+
+            // string type for data param is assumed to ajax datarequests
+            if (!scope.data && angular.isString(attrs.url)) {
+                console.log('load data from remote: ' + attrs.url);
+
+                // show loading
+                chart.showLoading({ text: scope.config.loading || '奋力加载中...' });
+
+                // fire data request
+                $http.get(attrs.url)
+                    .success(function (response) {
+                        chart.hideLoading();
+                        console.log(response);
+                        if (response.data) {
+                            scope.data = response.data;
+                            setOptions();
+                        } else {
+                            throw new Error('angular-echarts: no data loaded from ' + attrs.url);
+                        }
+                    })
+                    .error(function (response) {
+                        chart.hideLoading();
+                        console.log(response);
+                        throw new Error('angular-echarts: error loading data from ' + attrs.url);
+                    });
+
+            // if data is avaliable, render immediately
+            } else {
+                setOptions();
+            }
 
             // update when charts config changes
             scope.$watch(function () { return scope.config; }, function (value) {
@@ -310,13 +353,6 @@
                 if (value) { setOptions(); }
             });
 
-            function setOptions() {
-                var options = getOptions(scope.data, scope.config, type);
-                chart.setOption(options);
-                if (scope.config.debug) {
-                    console.log(options);
-                }
-            }
         };
     }
 
@@ -324,70 +360,70 @@
      * add directives
      */
     angular.module('angular-echarts', [])
-        .directive('lineChart', function () {
+        .directive('lineChart', function ($http) {
             return {
                 restrict: 'EA',
                 template: '<div></div>',
                 scope: {
-                    config: "=config",
-                    data: "=data"
+                    config: '=config',
+                    data: '=data'
                 },
-                link: getLinkFunction('line')
+                link: getLinkFunction($http, 'line')
             };
         })
-        .directive('barChart', function () {
+        .directive('barChart', function ($http) {
             return {
                 restrict: 'EA',
                 template: '<div></div>',
                 scope: {
-                    config: "=config",
-                    data: "=data"
+                    config: '=config',
+                    data: '=data'
                 },
-                link: getLinkFunction('bar')
+                link: getLinkFunction($http, 'bar')
             };
         })
-        .directive('areaChart', function () {
+        .directive('areaChart', function ($http) {
             return {
                 restrict: 'EA',
                 template: '<div></div>',
                 scope: {
-                    config: "=config",
-                    data: "=data"
+                    config: '=config',
+                    data: '=data'
                 },
-                link: getLinkFunction('area')
+                link: getLinkFunction($http, 'area')
             };
         })
-        .directive('pieChart', function () {
+        .directive('pieChart', function ($http) {
             return {
                 restrict: 'EA',
                 template: '<div></div>',
                 scope: {
-                    config: "=config",
-                    data: "=data"
+                    config: '=config',
+                    data: '=data'
                 },
-                link: getLinkFunction('pie')
+                link: getLinkFunction($http, 'pie')
             };
         })
-        .directive('donutChart', function () {
+        .directive('donutChart', function ($http) {
             return {
                 restrict: 'EA',
                 template: '<div></div>',
                 scope: {
-                    config: "=config",
-                    data: "=data"
+                    config: '=config',
+                    data: '=data'
                 },
-                link: getLinkFunction('donut')
+                link: getLinkFunction($http, 'donut')
             };
         })
-        .directive('gaugeChart', function () {
+        .directive('gaugeChart', function ($http) {
             return {
                 restrict: 'EA',
                 template: '<div></div>',
                 scope: {
-                    config: "=config",
-                    data: "=data"
+                    config: '=config',
+                    data: '=data'
                 },
-                link: getLinkFunction('gauge')
+                link: getLinkFunction($http, 'gauge')
             };
         });
 
@@ -699,7 +735,7 @@
             textStyle: {
                 fontFamily: '微软雅黑, Arial, Verdana, sans-serif'
             }
-        }
+        };
 
         return macarons;
     }

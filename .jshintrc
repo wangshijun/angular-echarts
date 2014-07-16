@@ -38,8 +38,7 @@
         "after",
         "afterEach",
         "it",
-        "moment",
-        "google",
+        "echarts",
         "expect"
     ],
     "indent": 4,
