@@ -38,12 +38,10 @@
     app.controller('LineChartController', function ($scope) {
 
         $scope.config = {
-            title: 'Line Chart',
-            subtitle: 'Line Chart Subtitle',
             debug: true,
-            showXAxis: true,
-            showYAxis: true,
-            showLegend: true,
+            showXAxis: false,
+            showYAxis: false,
+            showLegend: false,
             stack: false,
         };
 

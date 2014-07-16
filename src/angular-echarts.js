@@ -69,6 +69,12 @@
 
     /**
      * get chart options object
+     *
+     * @param {Object} config
+     *      - showXAxis
+     *      - showYAxis
+     *      - showLegend
+     *      - showToolbox
      */
     function getOptions(data, config, type) {
         // merge default config
@@ -116,7 +122,11 @@
         }
 
         if (!config.showLegend) {
-            options.legend.data = [];
+            delete options.legend;
+        }
+
+        if (!config.title) {
+            delete options.title;
         }
 
         return options;

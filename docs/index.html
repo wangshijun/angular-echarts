@@ -9,7 +9,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width,initial-scale=1">
 
-    <script src="../vendor/baidu-echarts/build/echarts-plain.js"></script>
+    <link rel="stylesheet" href="../vendor/bootstrap/dist/css/bootstrap.min.css" />
+    <script src="../vendor/baidu-echarts/build/echarts-plain-original.js"></script>
     <script src="../vendor/angular/angular.min.js"></script>
     <script src="../src/angular-echarts.js"></script>
     <script src="../docs/docs.js"></script>
@@ -18,21 +19,21 @@
 
 <body class="ng-cloak" ng-app="docs">
 
-<div class="container">
+<div class="container-fluid">
     <div class="row">
         <div class="col-md-3" ng-controller="LineChartController">
-            <line-chart config="config" data="data" width="400" height="300"></line-chart>
-            <line-chart config="config" data="multiple" width="400" height="300"></line-chart>
+            <line-chart config="config" data="data"></line-chart>
+            <line-chart config="config" data="multiple"></line-chart>
         </div>
 
         <div class="col-md-3" ng-controller="BarChartController">
-            <bar-chart config="config" data="data" width="400" height="300"></bar-chart>
-            <bar-chart config="config" data="multiple" width="400" height="300"></bar-chart>
+            <bar-chart config="config" data="data"></bar-chart>
+            <bar-chart config="config" data="multiple"></bar-chart>
         </div>
 
         <div class="col-md-3" ng-controller="AreaChartController">
-            <area-chart config="config" data="data" width="400" height="300"></area-chart>
-            <area-chart config="config" data="multiple" width="400" height="300"></area-chart>
+            <area-chart config="config" data="data"></area-chart>
+            <area-chart config="config" data="multiple"></area-chart>
         </div>
 
         <div class="col-md-3" ng-controller="LineChartController">
