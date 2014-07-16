@@ -15,7 +15,7 @@
 
         return {
             type: 'category',
-            boundaryGap : false,
+            boundaryGap: false,
             data: ticks,
         };
     }
@@ -51,7 +51,10 @@
                 };
             }
 
-            if (type === 'pie') {
+            if (isPieChart(type)) {
+                // donut charts are actually pie charts
+                conf.type = 'pie';
+
                 // datapoints for pie chart
                 conf.data = [];
                 angular.forEach(serie.datapoints, function (datapoint) {
@@ -59,8 +62,33 @@
                 });
 
                 // pie chart need special radius, center config
-                conf.radius = config.radius || '60%';
                 conf.center = config.center || ['40%', '50%'];
+                conf.radius = config.radius || '60%';
+
+                // donut chart require special itemStyle
+                if (type === 'donut') {
+                    conf.radius = config.radius || ['50%', '70%'];
+                    conf.itemStyle = {
+                        normal: {
+                            label: {
+                                show: false
+                            },
+                            labelLine: {
+                                show: false
+                            }
+                        },
+                        emphasis: {
+                            label: {
+                                show: true,
+                                position: 'center',
+                                textStyle: {
+                                    fontSize: '50',
+                                    fontWeight: 'bold'
+                                }
+                            }
+                        }
+                    };
+                }
             }
 
             // if stack set to true
@@ -74,12 +102,16 @@
         return series;
     }
 
+    function isPieChart(type) {
+        return ['pie', 'donut'].indexOf(type) > -1;
+    }
+
     /**
      * get legends from data series
      */
     function getLegend(data, config, type) {
         var legend = { data: []};
-        if (type === 'pie') {
+        if (isPieChart(type)) {
             angular.forEach(data[0].datapoints, function (datapoint) {
                 legend.data.push(datapoint.x);
             });
@@ -111,13 +143,14 @@
                 tooltip.trigger = 'axis';
                 break;
             case 'pie':
+            case 'donut':
             case 'bar':
                 tooltip.trigger = 'item';
                 break;
         }
 
         if (type === 'pie') {
-            tooltip.formatter = '{a} <br/>{b} : {c} ({d}%)';
+            tooltip.formatter = '{a} <br/>{b}: {c} ({d}%)';
         }
 
         return tooltip;
@@ -128,7 +161,7 @@
             return config.title;
         }
 
-        return type === 'pie' ? null : {
+        return isPieChart(type) ? null: {
             text: config.title,
             subtext: config.subtitle || '',
         };
@@ -157,13 +190,13 @@
             tooltip: getTooltip(data, config, type),
             legend: getLegend(data, config, type),
             toolbox: {      // TODO make this overwritable
-                show : false,
+                show: false,
             },
             // 充分利用控件展示图表
             grid: { x: 0, y: 10 },
             calculable: false,
             xAxis: [ getAxisTicks(data, config, type) ],
-            yAxis: [ { type : 'value' } ],
+            yAxis: [ { type: 'value' } ],
             series: getSeries(data, config, type),
         };
 
@@ -187,7 +220,7 @@
             delete options.legend;
         }
 
-        if (type === 'pie') {
+        if (isPieChart(type)) {
             delete options.xAxis;
             delete options.yAxis;
             delete options.grid;
@@ -276,6 +309,17 @@
                 },
                 link: getLinkFunction('pie')
             };
+        })
+        .directive('donutChart', function () {
+            return {
+                restrict: 'EA',
+                template: '<div></div>',
+                scope: {
+                    config: "=config",
+                    data: "=data"
+                },
+                link: getLinkFunction('donut')
+            };
         });
 
     // posible themes: infographic macarons shine dark blue green red gray default
@@ -313,23 +357,23 @@
             },
 
             toolbox: {
-                color : ['#1e90ff', '#1e90ff', '#1e90ff', '#1e90ff'],
-                effectiveColor : '#ff4500',
+                color: ['#1e90ff', '#1e90ff', '#1e90ff', '#1e90ff'],
+                effectiveColor: '#ff4500',
                 itemGap: 8
             },
 
             // 提示框
             tooltip: {
                 backgroundColor: 'rgba(50,50,50,0.5)',     // 提示背景颜色，默认为透明度为0.7的黑色
-                axisPointer : {            // 坐标轴指示器，坐标轴触发有效
-                    type : 'line',         // 默认为直线，可选为：'line' | 'shadow'
-                    lineStyle : {          // 直线指示器样式设置
+                axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                    type: 'line',         // 默认为直线，可选为：'line' | 'shadow'
+                    lineStyle: {          // 直线指示器样式设置
                         color: '#008acd'
                     },
                     crossStyle: {
                         color: '#008acd'
                     },
-                    shadowStyle : {                     // 阴影指示器样式设置
+                    shadowStyle: {                     // 阴影指示器样式设置
                         color: 'rgba(200,200,200,0.2)'
                     }
                 }
@@ -382,9 +426,9 @@
                         width: 1,
                     }
                 },
-                splitArea : {
-                    show : true,
-                    areaStyle : {
+                splitArea: {
+                    show: true,
+                    areaStyle: {
                         color: ['rgba(250,250,250,0.1)','rgba(200,200,200,0.1)']
                     }
                 },
@@ -395,35 +439,35 @@
                 }
             },
 
-            polar : {
+            polar: {
                 axisLine: {            // 坐标轴线
                     lineStyle: {       // 属性lineStyle控制线条样式
                         color: '#ddd'
                     }
                 },
-                splitArea : {
-                    show : true,
-                    areaStyle : {
+                splitArea: {
+                    show: true,
+                    areaStyle: {
                         color: ['rgba(250,250,250,0.2)','rgba(200,200,200,0.2)']
                     }
                 },
-                splitLine : {
-                    lineStyle : {
-                        color : '#ddd'
+                splitLine: {
+                    lineStyle: {
+                        color: '#ddd'
                     }
                 }
             },
 
-            timeline : {
-                lineStyle : {
-                    color : '#008acd'
+            timeline: {
+                lineStyle: {
+                    color: '#008acd'
                 },
-                controlStyle : {
-                    normal : { color : '#008acd'},
-                    emphasis : { color : '#008acd'}
+                controlStyle: {
+                    normal: { color: '#008acd'},
+                    emphasis: { color: '#008acd'}
                 },
-                symbol : 'emptyCircle',
-                symbolSize : 3
+                symbol: 'emptyCircle',
+                symbolSize: 3
             },
 
             // 柱形图默认参数
@@ -440,7 +484,7 @@
 
             // 折线图默认参数
             line: {
-                smooth : true,
+                smooth: true,
                 symbol: 'emptyCircle',  // 拐点图形类型
                 symbolSize: 3           // 拐点图形大小
             },
@@ -467,11 +511,11 @@
             },
 
             // 雷达图默认参数
-            radar : {
+            radar: {
                 symbol: 'emptyCircle',    // 图形类型
                 symbolSize:3
                 //symbol: null,         // 拐点图形类型
-                //symbolRotate : null,  // 图形旋转控制
+                //symbolRotate: null,  // 图形旋转控制
             },
 
             map: {
@@ -499,49 +543,49 @@
                 }
             },
 
-            force : {
+            force: {
                 itemStyle: {
                     normal: {
-                        linkStyle : {
-                            strokeColor : '#1e90ff'
+                        linkStyle: {
+                            strokeColor: '#1e90ff'
                         }
                     }
                 }
             },
 
-            chord : {
-                padding : 4,
-                itemStyle : {
-                    normal : {
-                        lineStyle : {
-                            width : 1,
-                            color : 'rgba(128, 128, 128, 0.5)'
+            chord: {
+                padding: 4,
+                itemStyle: {
+                    normal: {
+                        lineStyle: {
+                            width: 1,
+                            color: 'rgba(128, 128, 128, 0.5)'
                         },
-                        chordStyle : {
-                            lineStyle : {
-                                width : 1,
-                                color : 'rgba(128, 128, 128, 0.5)'
+                        chordStyle: {
+                            lineStyle: {
+                                width: 1,
+                                color: 'rgba(128, 128, 128, 0.5)'
                             }
                         }
                     },
-                    emphasis : {
-                        lineStyle : {
-                            width : 1,
-                            color : 'rgba(128, 128, 128, 0.5)'
+                    emphasis: {
+                        lineStyle: {
+                            width: 1,
+                            color: 'rgba(128, 128, 128, 0.5)'
                         },
-                        chordStyle : {
-                            lineStyle : {
-                                width : 1,
-                                color : 'rgba(128, 128, 128, 0.5)'
+                        chordStyle: {
+                            lineStyle: {
+                                width: 1,
+                                color: 'rgba(128, 128, 128, 0.5)'
                             }
                         }
                     }
                 }
             },
 
-            gauge : {
+            gauge: {
                 startAngle: 225,
-                endAngle : -45,
+                endAngle: -45,
                 axisLine: {            // 坐标轴线
                     show: true,        // 默认显示，属性show控制显示与否
                     lineStyle: {       // 属性lineStyle控制线条样式
@@ -567,16 +611,16 @@
                         color: 'auto'
                     }
                 },
-                pointer : {
-                    width : 5,
-                    color : 'auto'
+                pointer: {
+                    width: 5,
+                    color: 'auto'
                 },
-                title : {
+                title: {
                     textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
                         color: '#333'
                     }
                 },
-                detail : {
+                detail: {
                     textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
                         color: 'auto'
                     }
