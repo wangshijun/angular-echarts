@@ -79,5 +79,19 @@
         $scope.multiple = [pageload, firstPaint ];
 
     });
+
+    app.controller('PieChartController', function ($scope) {
+
+        $scope.config = {
+            title: 'Pie Chart',
+            subtitle: 'Pie Chart Subtitle',
+            debug: true,
+        };
+
+        $scope.data = [ pageload ];
+        $scope.multiple = [pageload, firstPaint ];
+
+    });
+
 })();
 

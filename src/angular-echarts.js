@@ -22,14 +22,20 @@
 
     /**
      * get series config
+     *
+     * @param {Array} data serie data
+     * @param {Object} config options
+     * @param {String} chart type
      */
     function getSeries(data, config, type) {
         var series = [];
         angular.forEach(data, function (serie) {
+            // datapoints for line, area, bar chart
             var datapoints = [];
             angular.forEach(serie.datapoints, function (datapoint) {
                 datapoints.push(datapoint.y);
             });
+
 
             var conf = {
                 type: type || 'line',
@@ -43,6 +49,18 @@
                 conf.itemStyle = {
                     normal: { areaStyle: { type: 'default'}}
                 };
+            }
+
+            if (type === 'pie') {
+                // datapoints for pie chart
+                conf.data = [];
+                angular.forEach(serie.datapoints, function (datapoint) {
+                    conf.data.push({value: datapoint.y, name: datapoint.x });
+                });
+
+                // pie chart need special radius, center config
+                conf.radius = config.radius || '60%';
+                conf.center = config.center || ['40%', '50%'];
             }
 
             // if stack set to true
@@ -59,12 +77,61 @@
     /**
      * get legends from data series
      */
-    function getLegends(data, config, type) {
-        var legends = [];
-        angular.forEach(data, function (serie) {
-            legends.push(serie.name);
-        });
-        return legends;
+    function getLegend(data, config, type) {
+        var legend = { data: []};
+        if (type === 'pie') {
+            angular.forEach(data[0].datapoints, function (datapoint) {
+                legend.data.push(datapoint.x);
+            });
+            legend.orient = 'verticle';
+            legend.x = 'right';
+            legend.y = 'center';
+
+        } else {
+            angular.forEach(data, function (serie) {
+                legend.data.push(serie.name);
+            });
+        }
+
+        return angular.extend(legend, config.legend || {})
+    }
+
+    /**
+     * get tooltip config
+     */
+    function getTooltip(data, config, type) {
+        if (angular.isObject(config.tooltip)) {
+            return config.tooltip;
+        }
+
+        var tooltip = {};
+        switch (type) {
+            case 'line':
+            case 'area':
+                tooltip.trigger = 'axis';
+                break;
+            case 'pie':
+            case 'bar':
+                tooltip.trigger = 'item';
+                break;
+        }
+
+        if (type === 'pie') {
+            tooltip.formatter = '{a} <br/>{b} : {c} ({d}%)';
+        }
+
+        return tooltip;
+    }
+
+    function getTitle(data, config, type) {
+        if (angular.isObject(config.title)) {
+            return config.title;
+        }
+
+        return type === 'pie' ? null : {
+            text: config.title,
+            subtext: config.subtitle || '',
+        };
     }
 
     /**
@@ -86,23 +153,14 @@
 
         // basic config
         var options = {
-            title : {
-                text: config.title,
-                subtext: config.subtitle || '',
-            },
-            tooltip : {
-                trigger: config.tooltip || (type === 'bar' ? 'item' : 'axis'),
-            },
-            legend: {
-                data: config.legend || getLegends(data, config, type),
-            },
-            toolbox: {
+            title: getTitle(data, config, type),
+            tooltip: getTooltip(data, config, type),
+            legend: getLegend(data, config, type),
+            toolbox: {      // TODO make this overwritable
                 show : false,
             },
-            grid: {     // 充分利用控件展示图表
-                x: 0,
-                y: 10,
-            },
+            // 充分利用控件展示图表
+            grid: { x: 0, y: 10 },
             calculable: false,
             xAxis: [ getAxisTicks(data, config, type) ],
             yAxis: [ { type : 'value' } ],
@@ -127,6 +185,12 @@
 
         if (!config.showLegend) {
             delete options.legend;
+        }
+
+        if (type === 'pie') {
+            delete options.xAxis;
+            delete options.yAxis;
+            delete options.grid;
         }
 
         return options;
@@ -200,6 +264,17 @@
                     data: "=data"
                 },
                 link: getLinkFunction('area')
+            };
+        })
+        .directive('pieChart', function () {
+            return {
+                restrict: 'EA',
+                template: '<div></div>',
+                scope: {
+                    config: "=config",
+                    data: "=data"
+                },
+                link: getLinkFunction('pie')
             };
         });
 
