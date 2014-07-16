@@ -71,7 +71,7 @@ function getLinkFunction($http, theme, util, type) {
         }
 
         function setOptions() {
-            if (scope.data && scope.config) {
+            if ((scope._data || scope.data) && scope.config) {
                 var options = getOptions(scope._data || scope.data, scope.config, type);
                 if (scope.config.debug) {
                     console.log(options);
