@@ -180,6 +180,9 @@ angular.module('angular-echarts.util', []).factory('util', function () {
             angular.forEach(data, function (serie) {
                 legend.data.push(serie.name);
             });
+            legend.orient = 'verticle';
+            legend.x = 12;
+            legend.y = config.subtitle ? 54 : 30;
         }
 
         return angular.extend(legend, config.legend || {});
