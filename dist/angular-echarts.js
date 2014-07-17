@@ -1534,9 +1534,14 @@ angular.module('angular-echarts.theme').factory('macarons', function () {
                 // 默认为直线，可选为：'line' | 'shadow'
                 lineStyle: {
                     // 直线指示器样式设置
-                    color: '#008acd'
+                    color: '#008acd',
+                    type: 'dashed',
+                    width: 1
                 },
-                crossStyle: { color: '#008acd' },
+                crossStyle: {
+                    color: '#008acd',
+                    width: 1
+                },
                 shadowStyle: {
                     // 阴影指示器样式设置
                     color: 'rgba(200,200,200,0.2)'
