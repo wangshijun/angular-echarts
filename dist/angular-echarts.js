@@ -16,7 +16,6 @@ function getLinkFunction($http, theme, util, type) {
         function getSizes(config) {
             width = config.width || attrs.width || 320;
             height = config.height || attrs.height || 240;
-            console.log(width, height);
             dom.style.width = width + 'px';
             dom.style.height = height + 'px';
         }
@@ -34,10 +33,10 @@ function getLinkFunction($http, theme, util, type) {
                     legend: util.getLegend(data, config, type),
                     toolbox: angular.extend({ show: false }, config.toolbox || {}),
                     grid: {
-                        x: 0,
-                        y: 10,
+                        x: 5,
+                        y: 0,
                         width: width - 10,
-                        height: height - 40
+                        height: height - (config.showXAxis ? 40 : 5)
                     },
                     xAxis: [ util.getAxisTicks(data, config, type) ],
                     yAxis: [ { type: 'value' } ],
