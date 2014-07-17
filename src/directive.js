@@ -8,12 +8,14 @@
  */
 function getLinkFunction($http, theme, util, type) {
     return function (scope, element, attrs) {
+        scope.config = scope.config || {};
+
         var dom  = element.find('div')[0];
         var width = scope.config.width || attrs.width || 320;
         var height = scope.config.height || attrs.height || 240;
 
-        dom.style.width = width + 'px';
-        dom.style.height = height + 'px';
+        dom.style.width = width.indexOf('%') > 0 ? width : (width + 'px');
+        dom.style.height = height.indexOf('%') > 0 ? height : (height + 'px');
 
         var chart = echarts.init(dom, theme.get(scope.config.theme || 'macarons'));
 
