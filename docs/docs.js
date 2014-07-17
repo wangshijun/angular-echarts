@@ -104,6 +104,8 @@
 
         $scope.config = {
             debug: true,
+            // width: 480,
+            // height: 320,
         };
 
         $scope.data = '/data.php';
