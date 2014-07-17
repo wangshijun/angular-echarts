@@ -8,8 +8,8 @@
 function getLinkFunction($http, theme, util, type) {
     return function (scope, element, attrs) {
         var dom = element.find('div')[0];
-        var width = attrs.width || 360;
-        var height = attrs.height || 240;
+        var width = scope.config.width || attrs.width || 320;
+        var height = scope.config.height || attrs.height || 240;
         dom.style.width = width + 'px';
         dom.style.height = height + 'px';
         var chart = echarts.init(dom, theme.get(scope.config.theme || 'macarons'));
@@ -25,16 +25,13 @@ function getLinkFunction($http, theme, util, type) {
                     title: util.getTitle(data, config, type),
                     tooltip: util.getTooltip(data, config, type),
                     legend: util.getLegend(data, config, type),
-                    toolbox: {
-                        // TODO make this overwritable
-                        show: false
-                    },
-                    // 充分利用控件展示图表
+                    toolbox: angular.extend({ show: false }, config.toolbox || {}),
                     grid: {
                         x: 0,
-                        y: 10
+                        y: 10,
+                        width: width - 10,
+                        height: height - 40
                     },
-                    calculable: false,
                     xAxis: [ util.getAxisTicks(data, config, type) ],
                     yAxis: [ { type: 'value' } ],
                     series: util.getSeries(data, config, type)
@@ -64,33 +61,38 @@ function getLinkFunction($http, theme, util, type) {
             return options;
         }
         function setOptions() {
-            if ((scope._data || scope.data) && scope.config) {
-                var options = getOptions(scope._data || scope.data, scope.config, type);
+            if (!scope.data || !scope.config) {
+                return;
+            }
+            var options;
+            // string type for data param is assumed to ajax datarequests
+            if (angular.isString(scope.data)) {
+                // show loading
+                chart.showLoading({ text: scope.config.loading || '\u594B\u529B\u52A0\u8F7D\u4E2D...' });
+                // fire data request
+                $http.get(scope.data).success(function (response) {
+                    chart.hideLoading();
+                    if (response.data) {
+                        options = getOptions(response.data, scope.config, type);
+                        if (scope.config.debug) {
+                            console.log(options);
+                            console.log(response);
+                        }
+                        chart.setOption(options);
+                    } else {
+                        throw new Error('angular-echarts: no data loaded from ' + scope.data);
+                    }
+                }).error(function (response) {
+                    chart.hideLoading();
+                    throw new Error('angular-echarts: error loading data from ' + scope.data);
+                });    // if data is avaliable, render immediately
+            } else {
+                options = getOptions(scope.data, scope.config, type);
                 if (scope.config.debug) {
                     console.log(options);
                 }
                 chart.setOption(options);
             }
-        }
-        // string type for data param is assumed to ajax datarequests
-        if (!scope.data && angular.isString(attrs.url)) {
-            // show loading
-            chart.showLoading({ text: scope.config.loading || '\u594B\u529B\u52A0\u8F7D\u4E2D...' });
-            // fire data request
-            $http.get(attrs.url).success(function (response) {
-                chart.hideLoading();
-                if (response.data) {
-                    scope._data = response.data;
-                    setOptions();
-                } else {
-                    throw new Error('angular-echarts: no data loaded from ' + attrs.url);
-                }
-            }).error(function (response) {
-                chart.hideLoading();
-                throw new Error('angular-echarts: error loading data from ' + attrs.url);
-            });    // if data is avaliable, render immediately
-        } else {
-            setOptions();
         }
         // update when charts config changes
         scope.$watch(function () {
@@ -102,7 +104,7 @@ function getLinkFunction($http, theme, util, type) {
         });
         // update when charts data changes
         scope.$watch(function () {
-            return scope._data || scope.data;
+            return scope.data;
         }, function (value) {
             if (value) {
                 setOptions();

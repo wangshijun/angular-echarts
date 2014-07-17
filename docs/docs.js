@@ -100,5 +100,18 @@
         $scope.data = [ pageload ];
     });
 
+    app.controller('AjaxChartController', function ($scope, $interval) {
+
+        $scope.config = {
+            debug: true,
+        };
+
+        $scope.data = '/data.php';
+
+        $interval(function () {
+            $scope.data = '/data.php?ts=' + Date.now();
+        }, 5000);
+    });
+
 })();
 
