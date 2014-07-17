@@ -37,7 +37,7 @@ function getLinkFunction($http, theme, util, type) {
                 toolbox: angular.extend({ show: false }, config.toolbox || {}),
                 grid: { x: 5, y: 0, width: width - 10, height: height - (config.showXAxis ? 40 : 5) },
                 xAxis: [ util.getAxisTicks(data, config, type) ],
-                yAxis: [ { type: 'value' } ],
+                yAxis: [ { type: 'value', scale: true } ],
                 series: util.getSeries(data, config, type),
             };
 

@@ -35,7 +35,7 @@ function getLinkFunction($http, theme, util, type) {
                         height: height - (config.showXAxis ? 40 : 5)
                     },
                     xAxis: [ util.getAxisTicks(data, config, type) ],
-                    yAxis: [ { type: 'value' } ],
+                    yAxis: [ { type: 'value', scale: true } ],
                     series: util.getSeries(data, config, type)
                 };
             if (!config.showXAxis) {
