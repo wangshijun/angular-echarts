@@ -10,10 +10,8 @@ function getLinkFunction($http, theme, util, type) {
     return function (scope, element, attrs) {
         scope.config = scope.config || {};
 
-        var dom  = element.find('div')[0];
-        var width;
-        var height;
-        var chart;
+        var dom  = element.find('div')[0],
+            width, height, chart;
 
         chart = echarts.init(dom, theme.get(scope.config.theme || 'macarons'));
 
@@ -82,6 +80,10 @@ function getLinkFunction($http, theme, util, type) {
             var options;
 
             getSizes(scope.config);
+
+            if (chart && chart.clear) {
+                chart.clear();
+            }
 
             // string type for data param is assumed to ajax datarequests
             if (angular.isString(scope.data)) {
