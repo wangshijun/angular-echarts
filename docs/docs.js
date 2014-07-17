@@ -104,6 +104,7 @@
 
         $scope.config = {
             debug: true,
+            showXAxis: false,
             // width: 480,
             // height: 320,
         };
