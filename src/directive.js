@@ -81,10 +81,6 @@ function getLinkFunction($http, theme, util, type) {
 
             getSizes(scope.config);
 
-            if (chart && chart.clear) {
-                chart.clear();
-            }
-
             // string type for data param is assumed to ajax datarequests
             if (angular.isString(scope.data)) {
                 // show loading
@@ -98,6 +94,9 @@ function getLinkFunction($http, theme, util, type) {
                         if (scope.config.debug) {
                             console.log(options);
                             console.log(response);
+                        }
+                        if (scope.config.forceClear) {
+                            chart.clear();
                         }
                         chart.setOption(options);
                         chart.resize();
@@ -114,6 +113,9 @@ function getLinkFunction($http, theme, util, type) {
                 options = getOptions(scope.data, scope.config, type);
                 if (scope.config.debug) {
                     console.log(options);
+                }
+                if (scope.config.forceClear) {
+                    chart.clear();
                 }
                 chart.setOption(options);
                 chart.resize();
