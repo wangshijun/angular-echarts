@@ -11,13 +11,21 @@ function getLinkFunction($http, theme, util, type) {
         scope.config = scope.config || {};
 
         var dom  = element.find('div')[0];
-        var width = scope.config.width || attrs.width || 320;
-        var height = scope.config.height || attrs.height || 240;
+        var width;
+        var height;
+        var chart;
 
-        dom.style.width = width + 'px';
-        dom.style.height = height + 'px';
+        chart = echarts.init(dom, theme.get(scope.config.theme || 'macarons'));
 
-        var chart = echarts.init(dom, theme.get(scope.config.theme || 'macarons'));
+        function getSizes(config) {
+            width = config.width || attrs.width || 320;
+            height = config.height || attrs.height || 240;
+
+            console.log(width, height);
+
+            dom.style.width = width + 'px';
+            dom.style.height = height + 'px';
+        }
 
         function getOptions(data, config, type) {
             // merge default config
@@ -75,6 +83,8 @@ function getLinkFunction($http, theme, util, type) {
 
             var options;
 
+            getSizes(scope.config);
+
             // string type for data param is assumed to ajax datarequests
             if (angular.isString(scope.data)) {
                 // show loading
@@ -90,6 +100,7 @@ function getLinkFunction($http, theme, util, type) {
                             console.log(response);
                         }
                         chart.setOption(options);
+                        chart.resize();
                     } else {
                         throw new Error('angular-echarts: no data loaded from ' + scope.data);
                     }
@@ -105,6 +116,7 @@ function getLinkFunction($http, theme, util, type) {
                     console.log(options);
                 }
                 chart.setOption(options);
+                chart.resize();
             }
         }
 
