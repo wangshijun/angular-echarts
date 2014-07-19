@@ -35,6 +35,7 @@ function getLinkFunction($http, theme, util, type) {
                 tooltip: util.getTooltip(data, config, type),
                 legend: util.getLegend(data, config, type),
                 toolbox: angular.extend({ show: false }, config.toolbox || {}),
+                // TODO optimize this
                 grid: { x: 5, y: 0, width: width - 10, height: height - (config.showXAxis ? 40 : 5) },
                 xAxis: [ util.getAxisTicks(data, config, type) ],
                 yAxis: [ { type: 'value', scale: true } ],
@@ -64,7 +65,6 @@ function getLinkFunction($http, theme, util, type) {
             if (!util.isAxisChart(type)) {
                 delete options.xAxis;
                 delete options.yAxis;
-                delete options.grid;
             }
 
             return options;

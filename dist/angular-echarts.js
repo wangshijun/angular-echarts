@@ -28,6 +28,7 @@ function getLinkFunction($http, theme, util, type) {
                     tooltip: util.getTooltip(data, config, type),
                     legend: util.getLegend(data, config, type),
                     toolbox: angular.extend({ show: false }, config.toolbox || {}),
+                    // TODO optimize this
                     grid: {
                         x: 5,
                         y: 0,
@@ -58,7 +59,6 @@ function getLinkFunction($http, theme, util, type) {
             if (!util.isAxisChart(type)) {
                 delete options.xAxis;
                 delete options.yAxis;
-                delete options.grid;
             }
             return options;
         }
@@ -375,9 +375,6 @@ angular.module('angular-echarts.util', []).factory('util', function () {
      * get tooltip config
      */
     function getTooltip(data, config, type) {
-        if (angular.isObject(config.tooltip)) {
-            return config.tooltip;
-        }
         var tooltip = {};
         switch (type) {
         case 'line':
@@ -394,7 +391,7 @@ angular.module('angular-echarts.util', []).factory('util', function () {
         if (type === 'pie') {
             tooltip.formatter = '{a} <br/>{b}: {c} ({d}%)';
         }
-        return tooltip;
+        return angular.extend(tooltip, config.tooltip || {});
     }
     function getTitle(data, config, type) {
         if (angular.isObject(config.title)) {

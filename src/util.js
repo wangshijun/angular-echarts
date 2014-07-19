@@ -192,10 +192,6 @@ angular.module('angular-echarts.util', []).factory('util', function () {
      * get tooltip config
      */
     function getTooltip(data, config, type) {
-        if (angular.isObject(config.tooltip)) {
-            return config.tooltip;
-        }
-
         var tooltip = {};
         switch (type) {
             case 'line':
@@ -214,7 +210,7 @@ angular.module('angular-echarts.util', []).factory('util', function () {
             tooltip.formatter = '{a} <br/>{b}: {c} ({d}%)';
         }
 
-        return tooltip;
+        return angular.extend(tooltip, config.tooltip || {});
     }
 
     function getTitle(data, config, type) {
