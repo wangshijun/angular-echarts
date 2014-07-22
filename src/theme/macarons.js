@@ -166,9 +166,9 @@ angular.module('angular-echarts.theme').factory('macarons', function () {
 
         // 折线图默认参数
         line: {
-            smooth: true,
-            symbol: 'emptyCircle',  // 拐点图形类型
-            symbolSize: 3           // 拐点图形大小
+            smooth: false,
+            symbol: 'circle',   // 拐点图形类型
+            symbolSize: 3       // 拐点图形大小
         },
 
         // K线图默认参数
