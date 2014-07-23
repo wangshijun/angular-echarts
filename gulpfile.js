@@ -23,6 +23,13 @@ gulp.task('build', function () {
         .pipe(plugins.size({ showFiles: true }))
         .pipe(gulp.dest('dist'))
 
+});
+
+/**
+ * publish: build then bump version
+ */
+gulp.task('publish', ['build'], function () {
+
     // bump bower, npm versions
     gulp.src(['package.json', 'bower.json'])
         .pipe(plugins.bump())
