@@ -14,6 +14,7 @@ gulp.task('build', function () {
 
     // build js
     gulp.src(['src/directive.js', 'src/util.js', 'src/theme.js', 'src/theme/*.js'])
+        .pipe(plugins.removeUseStrict())
         .pipe(plugins.concat('angular-echarts.js'))
         .pipe(plugins.wrap('(function () {<%= contents %>})();'))
         .pipe(gulp.dest('dist'))

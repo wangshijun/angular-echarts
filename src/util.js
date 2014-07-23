@@ -211,7 +211,7 @@ angular.module('angular-echarts.util', []).factory('util', function () {
             tooltip.formatter = '{a} <br/>{b}: {c} ({d}%)';
         }
 
-        return angular.extend(tooltip, angular.isObject(config.tooltip) ? config.tooltip || {});
+        return angular.extend(tooltip, angular.isObject(config.tooltip) ? config.tooltip : {});
     }
 
     function getTitle(data, config, type) {
