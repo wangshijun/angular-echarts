@@ -22,20 +22,20 @@ function getLinkFunction($http, theme, util, type) {
                 showYAxis: true,
                 showLegend: true
             }, config);
+            var grid = {
+                    x: 0,
+                    y: 5,
+                    width: width - 5,
+                    height: height - 35
+                };
             // basic config
             var options = {
                     title: util.getTitle(data, config, type),
                     tooltip: util.getTooltip(data, config, type),
                     legend: util.getLegend(data, config, type),
-                    toolbox: angular.extend({ show: false }, config.toolbox || {}),
-                    grid: {
-                        x: 5,
-                        y: 0,
-                        width: width - 10,
-                        height: height - (config.showXAxis ? 40 : 5)
-                    },
-                    xAxis: [ util.getAxisTicks(data, config, type) ],
-                    yAxis: [ { type: 'value', scale: true } ],
+                    toolbox: angular.extend({ show: false }, angular.isObject(config.toolbox) ? config.toolbox : {}),
+                    xAxis: [ angular.extend({ orient: 'bottom' }, util.getAxisTicks(data, config, type)) ],
+                    yAxis: [ { type: 'value', orient: 'right' } ],
                     series: util.getSeries(data, config, type)
                 };
             if (!config.showXAxis) {
@@ -58,8 +58,8 @@ function getLinkFunction($http, theme, util, type) {
             if (!util.isAxisChart(type)) {
                 delete options.xAxis;
                 delete options.yAxis;
-                delete options.grid;
             }
+            options.grid = grid;
             return options;
         }
         function setOptions() {
@@ -211,7 +211,7 @@ angular.module('angular-echarts.util', []).factory('util', function () {
         });
         return {
             type: 'category',
-            boundaryGap: false,
+            boundaryGap: type === 'bar',
             data: ticks
         };
     }
@@ -366,7 +366,7 @@ angular.module('angular-echarts.util', []).factory('util', function () {
                 legend.data.push(serie.name);
             });
             legend.orient = 'verticle';
-            legend.x = 12;
+            legend.x = 52;
             legend.y = config.subtitle ? 54 : 30;
         }
         return angular.extend(legend, config.legend || {});
@@ -400,7 +400,7 @@ angular.module('angular-echarts.util', []).factory('util', function () {
         return isPieChart(type) ? null : {
             text: config.title,
             subtext: config.subtitle || '',
-            x: 10
+            x: 50
         };
     }
     return {
@@ -1573,8 +1573,15 @@ angular.module('angular-echarts.theme').factory('macarons', function () {
                     width: 1
                 }
             },
+            axisLabel: {
+                // label
+                skipFirst: true,
+                margin: 3,
+                textStyle: { color: '#999999' }
+            },
             axisTick: {
                 // 坐标轴线
+                show: false,
                 lineStyle: {
                     // 属性lineStyle控制线条样式
                     color: '#008acd',
@@ -1599,8 +1606,15 @@ angular.module('angular-echarts.theme').factory('macarons', function () {
                     width: 1
                 }
             },
+            axisLabel: {
+                // label
+                skipFirst: true,
+                margin: 3,
+                textStyle: { color: '#999999' }
+            },
             axisTick: {
                 // 坐标轴线
+                show: false,
                 lineStyle: {
                     // 属性lineStyle控制线条样式
                     color: '#008acd',
