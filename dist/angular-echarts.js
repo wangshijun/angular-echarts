@@ -34,8 +34,8 @@ function getLinkFunction($http, theme, util, type) {
                     tooltip: util.getTooltip(data, config, type),
                     legend: util.getLegend(data, config, type),
                     toolbox: angular.extend({ show: false }, angular.isObject(config.toolbox) ? config.toolbox : {}),
-                    xAxis: [ angular.extend({ orient: 'bottom' }, util.getAxisTicks(data, config, type)) ],
-                    yAxis: [ { type: 'value', orient: 'right' } ],
+                    xAxis: [ angular.extend({ orient: 'top', axisLine: { show: false } }, util.getAxisTicks(data, config, type)) ],
+                    yAxis: [ { type: 'value', orient: 'right', axisLine: { show: false } } ],
                     series: util.getSeries(data, config, type)
                 };
             if (!config.showXAxis) {
