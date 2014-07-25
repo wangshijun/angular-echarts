@@ -29,15 +29,21 @@ function getLinkFunction($http, theme, util, type) {
                 showLegend: true,
             }, config);
 
+            var grid = {
+                x: 0,
+                y: 5,
+                width: width - 5,
+                height: height - 35,
+            };
+
             // basic config
             var options = {
                 title: util.getTitle(data, config, type),
                 tooltip: util.getTooltip(data, config, type),
                 legend: util.getLegend(data, config, type),
-                toolbox: angular.extend({ show: false }, config.toolbox || {}),
-                grid: { x: 5, y: 0, width: width - 10, height: height - (config.showXAxis ? 40 : 5) },
-                xAxis: [ util.getAxisTicks(data, config, type) ],
-                yAxis: [ { type: 'value', scale: true } ],
+                toolbox: angular.extend({ show: false }, angular.isObject(config.toolbox) ? config.toolbox : {}),
+                xAxis: [ angular.extend({ orient: 'bottom' }, util.getAxisTicks(data, config, type)) ],
+                yAxis: [ { type: 'value', orient: 'right' } ],
                 series: util.getSeries(data, config, type),
             };
 
@@ -64,8 +70,9 @@ function getLinkFunction($http, theme, util, type) {
             if (!util.isAxisChart(type)) {
                 delete options.xAxis;
                 delete options.yAxis;
-                delete options.grid;
             }
+
+            options.grid = grid;
 
             return options;
         }

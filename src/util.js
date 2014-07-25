@@ -24,7 +24,7 @@ angular.module('angular-echarts.util', []).factory('util', function () {
 
         return {
             type: 'category',
-            boundaryGap: false,
+            boundaryGap: type === 'bar',
             data: ticks,
         };
     }
@@ -181,7 +181,7 @@ angular.module('angular-echarts.util', []).factory('util', function () {
                 legend.data.push(serie.name);
             });
             legend.orient = 'verticle';
-            legend.x = 12;
+            legend.x = 52;
             legend.y = config.subtitle ? 54 : 30;
         }
 
@@ -222,7 +222,7 @@ angular.module('angular-echarts.util', []).factory('util', function () {
         return isPieChart(type) ? null: {
             text: config.title,
             subtext: config.subtitle || '',
-            x: 10,
+            x: 50,
         };
     }
 

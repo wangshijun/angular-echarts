@@ -42,8 +42,8 @@
             // subtitle: 'Line Chart Subtitle',
             debug: true,
             showXAxis: true,
-            showYAxis: false,
-            showLegend: false,
+            showYAxis: true,
+            showLegend: true,
             stack: false,
         };
 
@@ -113,7 +113,7 @@
 
         $interval(function () {
             $scope.data = '/data.php?ts=' + Date.now();
-        }, 5000);
+        }, 60000);
     });
 
 })();

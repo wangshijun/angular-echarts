@@ -81,7 +81,15 @@ angular.module('angular-echarts.theme').factory('macarons', function () {
                     width: 1,
                 }
             },
+            axisLabel: {            // label
+                skipFirst: true,
+                margin: 3,
+                textStyle: {
+                    color: '#999999',
+                },
+            },
             axisTick: {            // 坐标轴线
+                show: false,
                 lineStyle: {       // 属性lineStyle控制线条样式
                     color: '#008acd',
                     width: 1,
@@ -102,11 +110,19 @@ angular.module('angular-echarts.theme').factory('macarons', function () {
                     width: 1,
                 }
             },
+            axisLabel: {            // label
+                skipFirst: true,
+                margin: 3,
+                textStyle: {
+                    color: '#999999',
+                },
+            },
             axisTick: {            // 坐标轴线
+                show: false,
                 lineStyle: {       // 属性lineStyle控制线条样式
                     color: '#008acd',
                     width: 1,
-                }
+                },
             },
             splitArea: {
                 show: true,
