@@ -36,14 +36,32 @@ function getLinkFunction($http, theme, util, type) {
                 height: height - 35,
             };
 
+            var xAxis = angular.extend({
+                orient: 'top',
+                axisLine: { show: false }
+            }, angular.isObject(config.xAxis) ? config.xAxis : {});
+
+            var yAxis = angular.extend({
+                type: 'value',
+                orient: 'right',
+                axisLine: {
+                    show: false
+                },
+                axisLabel: {
+                    formatter: function (v) {
+                        return util.formatKMBT(v);
+                    },
+                },
+            }, angular.isObject(config.yAxis) ? config.yAxis : {});
+
             // basic config
             var options = {
                 title: util.getTitle(data, config, type),
                 tooltip: util.getTooltip(data, config, type),
                 legend: util.getLegend(data, config, type),
                 toolbox: angular.extend({ show: false }, angular.isObject(config.toolbox) ? config.toolbox : {}),
-                xAxis: [ angular.extend({ orient: 'top', axisLine: { show: false } }, util.getAxisTicks(data, config, type)) ],
-                yAxis: [ { type: 'value', orient: 'right', axisLine: { show: false } } ],
+                xAxis: [ angular.extend(xAxis, util.getAxisTicks(data, config, type)) ],
+                yAxis: [ yAxis ],
                 series: util.getSeries(data, config, type),
             };
 

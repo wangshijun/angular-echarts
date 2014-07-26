@@ -226,6 +226,20 @@ angular.module('angular-echarts.util', []).factory('util', function () {
         };
     }
 
+    function formatKMBT(y, formatter) {
+        if (!formatter) {
+            formatter = function (v) { return Math.round(v * 100) / 100; };
+        }
+        y = Math.abs(y);
+        if (y >= 1000000000000)   { return formatter(y / 1000000000000) + 'T'; }
+        else if (y >= 1000000000) { return formatter(y / 1000000000) + 'B'; }
+        else if (y >= 1000000)    { return formatter(y / 1000000) + 'M'; }
+        else if (y >= 1000)       { return formatter(y / 1000) + 'K'; }
+        else if (y < 1 && y > 0)  { return formatter(y); }
+        else if (y === 0)         { return ''; }
+        else                      { return formatter(y); }
+    }
+
     return {
         isPieChart: isPieChart,
         isAxisChart: isAxisChart,
@@ -234,6 +248,7 @@ angular.module('angular-echarts.util', []).factory('util', function () {
         getLegend: getLegend,
         getTooltip: getTooltip,
         getTitle: getTitle,
+        formatKMBT: formatKMBT,
     };
 
 });
