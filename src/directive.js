@@ -44,6 +44,7 @@ function getLinkFunction($http, theme, util, type) {
             var yAxis = angular.extend({
                 type: 'value',
                 orient: 'right',
+                scale: true,
                 axisLine: {
                     show: false
                 },
