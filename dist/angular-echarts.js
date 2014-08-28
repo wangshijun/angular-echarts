@@ -354,6 +354,26 @@ angular.module('angular-echarts.util', []).factory('util', function () {
                             }
                         }
                     }, config.donut || {});
+                } else if (type === 'pie') {
+                    conf = angular.extend(conf, {
+                        itemStyle: {
+                            normal: {
+                                label: {
+                                    position: 'inner',
+                                    formatter: function (a, b, c, d) {
+                                        return (d - 0).toFixed(0) + '%';
+                                    }
+                                },
+                                labelLine: { show: false }
+                            },
+                            emphasis: {
+                                label: {
+                                    show: true,
+                                    formatter: '{b}\n{d}%'
+                                }
+                            }
+                        }
+                    }, config.pie || {});
                 }
             }
             // if stack set to true
