@@ -74,6 +74,12 @@ function getLinkFunction($http, theme, util, type) {
                 delete options.xAxis;
                 delete options.yAxis;
             }
+            if (config.dataZoom) {
+                options.dataZoom = angular.extend({
+                    show: true,
+                    realtime: true
+                }, config.dataZoom);
+            }
             options.grid = grid;
             return options;
         }
