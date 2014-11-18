@@ -108,8 +108,12 @@ function getLinkFunction($http, theme, util, type) {
                         if (scope.config.forceClear) {
                             chart.clear();
                         }
-                        chart.setOption(options);
-                        chart.resize();
+                        if (options.series.length) {
+                            chart.setOption(options);
+                            chart.resize();
+                        } else {
+                            element.text('\u6CA1\u6709\u6570\u636E');
+                        }
                     } else {
                         throw new Error('angular-echarts: no data loaded from ' + scope.data);
                     }
@@ -125,8 +129,12 @@ function getLinkFunction($http, theme, util, type) {
                 if (scope.config.forceClear) {
                     chart.clear();
                 }
-                chart.setOption(options);
-                chart.resize();
+                if (options.series.length) {
+                    chart.setOption(options);
+                    chart.resize();
+                } else {
+                    element.text('\u6CA1\u6709\u6570\u636E');
+                }
             }
         }
         // update when charts config changes
@@ -227,9 +235,11 @@ angular.module('angular-echarts.util', []).factory('util', function () {
      */
     function getAxisTicks(data, config, type) {
         var ticks = [];
-        angular.forEach(data[0].datapoints, function (datapoint) {
-            ticks.push(datapoint.x);
-        });
+        if (data[0]) {
+            angular.forEach(data[0].datapoints, function (datapoint) {
+                ticks.push(datapoint.x);
+            });
+        }
         return {
             type: 'category',
             boundaryGap: type === 'bar',
@@ -396,9 +406,11 @@ angular.module('angular-echarts.util', []).factory('util', function () {
     function getLegend(data, config, type) {
         var legend = { data: [] };
         if (isPieChart(type)) {
-            angular.forEach(data[0].datapoints, function (datapoint) {
-                legend.data.push(datapoint.x);
-            });
+            if (data[0]) {
+                angular.forEach(data[0].datapoints, function (datapoint) {
+                    legend.data.push(datapoint.x);
+                });
+            }
             legend.orient = 'verticle';
             legend.x = 'right';
             legend.y = 'center';

@@ -18,9 +18,11 @@ angular.module('angular-echarts.util', []).factory('util', function () {
      */
     function getAxisTicks(data, config, type) {
         var ticks = [];
-        angular.forEach(data[0].datapoints, function (datapoint) {
-            ticks.push(datapoint.x);
-        });
+        if (data[0]) {
+            angular.forEach(data[0].datapoints, function (datapoint) {
+                ticks.push(datapoint.x);
+            });
+        }
 
         return {
             type: 'category',
@@ -189,9 +191,11 @@ angular.module('angular-echarts.util', []).factory('util', function () {
     function getLegend(data, config, type) {
         var legend = { data: []};
         if (isPieChart(type)) {
-            angular.forEach(data[0].datapoints, function (datapoint) {
-                legend.data.push(datapoint.x);
-            });
+            if (data[0]) {
+                angular.forEach(data[0].datapoints, function (datapoint) {
+                    legend.data.push(datapoint.x);
+                });
+            }
             legend.orient = 'verticle';
             legend.x = 'right';
             legend.y = 'center';

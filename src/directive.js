@@ -133,8 +133,12 @@ function getLinkFunction($http, theme, util, type) {
                         if (scope.config.forceClear) {
                             chart.clear();
                         }
-                        chart.setOption(options);
-                        chart.resize();
+                        if (options.series.length) {
+                            chart.setOption(options);
+                            chart.resize();
+                        } else {
+                            element.text('没有数据');
+                        }
                     } else {
                         throw new Error('angular-echarts: no data loaded from ' + scope.data);
                     }
@@ -152,8 +156,12 @@ function getLinkFunction($http, theme, util, type) {
                 if (scope.config.forceClear) {
                     chart.clear();
                 }
-                chart.setOption(options);
-                chart.resize();
+                if (options.series.length) {
+                    chart.setOption(options);
+                    chart.resize();
+                } else {
+                    element.text('没有数据');
+                }
             }
         }
 
