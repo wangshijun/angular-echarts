@@ -83,6 +83,13 @@ function getLinkFunction($http, theme, util, type) {
             options.grid = grid;
             return options;
         }
+        var isAjaxInProgress = false;
+        var textStyle = {
+                color: 'red',
+                fontSize: 36,
+                fontWeight: 900,
+                fontFamily: 'Microsoft Yahei, Arial'
+            };
         function setOptions() {
             if (!scope.data || !scope.config) {
                 return;
@@ -94,17 +101,21 @@ function getLinkFunction($http, theme, util, type) {
             }
             // string type for data param is assumed to ajax datarequests
             if (angular.isString(scope.data)) {
+                if (isAjaxInProgress) {
+                    return;
+                }
+                isAjaxInProgress = true;
                 // show loading
-                chart.showLoading({ text: scope.config.loading || '\u594B\u529B\u52A0\u8F7D\u4E2D...' });
+                chart.showLoading({
+                    text: scope.config.loading || '\u594B\u529B\u52A0\u8F7D\u4E2D...',
+                    textStyle: textStyle
+                });
                 // fire data request
                 $http.get(scope.data).success(function (response) {
+                    isAjaxInProgress = false;
                     chart.hideLoading();
                     if (response.data) {
                         options = getOptions(response.data, scope.config, type);
-                        if (scope.config.debug) {
-                            console.log(options);
-                            console.log(response);
-                        }
                         if (scope.config.forceClear) {
                             chart.clear();
                         }
@@ -112,20 +123,21 @@ function getLinkFunction($http, theme, util, type) {
                             chart.setOption(options);
                             chart.resize();
                         } else {
-                            element.text('\u6CA1\u6709\u6570\u636E');
+                            chart.showLoading({
+                                text: scope.config.errorMsg || '\u51FA\u9519\u5566\uFF01\u6CA1\u6709\u6570\u636E',
+                                textStyle: textStyle
+                            });
                         }
                     } else {
                         throw new Error('angular-echarts: no data loaded from ' + scope.data);
                     }
                 }).error(function (response) {
+                    isAjaxInProgress = false;
                     chart.hideLoading();
                     throw new Error('angular-echarts: error loading data from ' + scope.data);
                 });    // if data is avaliable, render immediately
             } else {
                 options = getOptions(scope.data, scope.config, type);
-                if (scope.config.debug) {
-                    console.log(options);
-                }
                 if (scope.config.forceClear) {
                     chart.clear();
                 }
@@ -133,7 +145,10 @@ function getLinkFunction($http, theme, util, type) {
                     chart.setOption(options);
                     chart.resize();
                 } else {
-                    element.text('\u6CA1\u6709\u6570\u636E');
+                    chart.showLoading({
+                        text: scope.config.errorMsg || '\u51FA\u9519\u5566\uFF01\u6CA1\u6709\u6570\u636E',
+                        textStyle: textStyle
+                    });
                 }
             }
         }

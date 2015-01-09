@@ -103,6 +103,9 @@ function getLinkFunction($http, theme, util, type) {
             return options;
         }
 
+        var isAjaxInProgress = false;
+        var textStyle = { color: 'red', fontSize: 36, fontWeight: 900, fontFamily: 'Microsoft Yahei, Arial' };
+
         function setOptions() {
             if (!scope.data || !scope.config) {
                 return;
@@ -118,18 +121,19 @@ function getLinkFunction($http, theme, util, type) {
 
             // string type for data param is assumed to ajax datarequests
             if (angular.isString(scope.data)) {
+                if (isAjaxInProgress) { return; }
+                isAjaxInProgress = true;
+
                 // show loading
-                chart.showLoading({ text: scope.config.loading || '奋力加载中...' });
+                chart.showLoading({ text: scope.config.loading || '奋力加载中...', textStyle: textStyle });
 
                 // fire data request
                 $http.get(scope.data).success(function (response) {
+                    isAjaxInProgress = false;
                     chart.hideLoading();
+
                     if (response.data) {
                         options = getOptions(response.data, scope.config, type);
-                        if (scope.config.debug) {
-                            console.log(options);
-                            console.log(response);
-                        }
                         if (scope.config.forceClear) {
                             chart.clear();
                         }
@@ -137,12 +141,15 @@ function getLinkFunction($http, theme, util, type) {
                             chart.setOption(options);
                             chart.resize();
                         } else {
-                            element.text('没有数据');
+                            chart.showLoading({ text: scope.config.errorMsg || '出错啦！没有数据', textStyle: textStyle });
                         }
                     } else {
                         throw new Error('angular-echarts: no data loaded from ' + scope.data);
                     }
+
                 }).error(function (response) {
+                    isAjaxInProgress = false;
+
                     chart.hideLoading();
                     throw new Error('angular-echarts: error loading data from ' + scope.data);
                 });
@@ -150,9 +157,6 @@ function getLinkFunction($http, theme, util, type) {
             // if data is avaliable, render immediately
             } else {
                 options = getOptions(scope.data, scope.config, type);
-                if (scope.config.debug) {
-                    console.log(options);
-                }
                 if (scope.config.forceClear) {
                     chart.clear();
                 }
@@ -160,7 +164,7 @@ function getLinkFunction($http, theme, util, type) {
                     chart.setOption(options);
                     chart.resize();
                 } else {
-                    element.text('没有数据');
+                    chart.showLoading({ text: scope.config.errorMsg || '出错啦！没有数据', textStyle: textStyle });
                 }
             }
         }
