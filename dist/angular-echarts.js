@@ -124,17 +124,22 @@ function getLinkFunction($http, theme, util, type) {
                             chart.resize();
                         } else {
                             chart.showLoading({
-                                text: scope.config.errorMsg || '\u51FA\u9519\u5566\uFF01\u6CA1\u6709\u6570\u636E',
+                                text: scope.config.errorMsg || '\u6CA1\u6709\u6570\u636E',
                                 textStyle: textStyle
                             });
                         }
                     } else {
-                        throw new Error('angular-echarts: no data loaded from ' + scope.data);
+                        chart.showLoading({
+                            text: scope.config.emptyMsg || '\u6570\u636E\u52A0\u8F7D\u5931\u8D25',
+                            textStyle: textStyle
+                        });
                     }
                 }).error(function (response) {
                     isAjaxInProgress = false;
-                    chart.hideLoading();
-                    throw new Error('angular-echarts: error loading data from ' + scope.data);
+                    chart.showLoading({
+                        text: scope.config.emptyMsg || '\u6570\u636E\u52A0\u8F7D\u5931\u8D25',
+                        textStyle: textStyle
+                    });
                 });    // if data is avaliable, render immediately
             } else {
                 options = getOptions(scope.data, scope.config, type);
@@ -146,7 +151,7 @@ function getLinkFunction($http, theme, util, type) {
                     chart.resize();
                 } else {
                     chart.showLoading({
-                        text: scope.config.errorMsg || '\u51FA\u9519\u5566\uFF01\u6CA1\u6709\u6570\u636E',
+                        text: scope.config.errorMsg || '\u6CA1\u6709\u6570\u636E',
                         textStyle: textStyle
                     });
                 }

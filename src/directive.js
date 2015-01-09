@@ -141,17 +141,15 @@ function getLinkFunction($http, theme, util, type) {
                             chart.setOption(options);
                             chart.resize();
                         } else {
-                            chart.showLoading({ text: scope.config.errorMsg || '出错啦！没有数据', textStyle: textStyle });
+                            chart.showLoading({ text: scope.config.errorMsg || '没有数据', textStyle: textStyle });
                         }
                     } else {
-                        throw new Error('angular-echarts: no data loaded from ' + scope.data);
+                        chart.showLoading({ text: scope.config.emptyMsg || '数据加载失败', textStyle: textStyle });
                     }
 
                 }).error(function (response) {
                     isAjaxInProgress = false;
-
-                    chart.hideLoading();
-                    throw new Error('angular-echarts: error loading data from ' + scope.data);
+                    chart.showLoading({ text: scope.config.emptyMsg || '数据加载失败', textStyle: textStyle });
                 });
 
             // if data is avaliable, render immediately
@@ -164,7 +162,7 @@ function getLinkFunction($http, theme, util, type) {
                     chart.setOption(options);
                     chart.resize();
                 } else {
-                    chart.showLoading({ text: scope.config.errorMsg || '出错啦！没有数据', textStyle: textStyle });
+                    chart.showLoading({ text: scope.config.errorMsg || '没有数据', textStyle: textStyle });
                 }
             }
         }
