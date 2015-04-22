@@ -12,8 +12,8 @@ function getLinkFunction($http, theme, util, type) {
         function getSizes(config) {
             width = config.width || attrs.width || '100%';
             height = config.height || attrs.height || '100%';
-            dom.style.width = typeof width == 'string' && width.endsWith('%') ? width : width + 'px';
-            dom.style.height = typeof height == 'string' && height.endsWith('%') ? height : height + 'px';
+            dom.style.width = typeof width === 'string' && /.+%$/.test(width) ? width : width + 'px';
+            dom.style.height = typeof height === 'string' && /.+%$/.test(height) ? height : height + 'px';
         }
         function getOptions(data, config, type) {
             // merge default config
