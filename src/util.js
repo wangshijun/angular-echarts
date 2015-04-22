@@ -236,6 +236,9 @@ angular.module('angular-echarts.util', []).factory('util', function () {
         if (type === 'pie') {
             tooltip.formatter = '{a} <br/>{b}: {c} ({d}%)';
         }
+        
+        tooltip.showDelay = 0;
+        tooltip.transitionDuration = 0;
 
         return angular.extend(tooltip, angular.isObject(config.tooltip) ? config.tooltip : {});
     }
