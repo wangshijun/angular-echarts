@@ -51,6 +51,8 @@ angular.module('angular-echarts.util', []).factory('util', function () {
                 type: type || 'line',
                 name: serie.name,
                 data: datapoints,
+                symbol: serie.symbol,
+                symbolSize: serie.symbolSize
             };
 
             // area chart is actually line chart with special itemStyle
@@ -234,6 +236,9 @@ angular.module('angular-echarts.util', []).factory('util', function () {
         if (type === 'pie') {
             tooltip.formatter = '{a} <br/>{b}: {c} ({d}%)';
         }
+        
+        tooltip.showDelay = 0;
+        tooltip.transitionDuration = 0;
 
         return angular.extend(tooltip, angular.isObject(config.tooltip) ? config.tooltip : {});
     }

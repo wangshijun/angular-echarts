@@ -14,11 +14,11 @@ function getLinkFunction($http, theme, util, type) {
             width, height, chart;
 
         function getSizes(config) {
-            width = config.width || attrs.width || 320;
-            height = config.height || attrs.height || 240;
+            width = config.width || attrs.width || '100%';
+            height = config.height || attrs.height || '100%';
 
-            dom.style.width = width + 'px';
-            dom.style.height = height + 'px';
+            dom.style.width = ((typeof width) === 'string' && /.+%$/.test(width)) ? width : width + 'px';
+            dom.style.height = ((typeof height) === 'string' && /.+%$/.test(height)) ? height : height + 'px';
         }
 
         function getOptions(data, config, type) {
@@ -30,10 +30,10 @@ function getLinkFunction($http, theme, util, type) {
             }, config);
 
             var grid = {
-                x: 0,
-                y: 5,
-                width: width - 5,
-                height: height - 35,
+                x: '3.5%',
+                x2: '3.5%',
+                y: '10%',
+                y2: '10%'
             };
 
             var xAxis = angular.extend({
