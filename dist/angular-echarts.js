@@ -519,7 +519,7 @@ angular.module('angular-echarts.util', []).factory('util', function () {
  * theme services
  * posible themes: infographic macarons shine dark blue green red gray default
  */
-angular.module('angular-echarts.theme', []).factory('theme', ['infographic', 'macarons', 'shine', 'dark', 'blue', 'green', 'red', function (infographic, macarons, shine, dark, blue, green, red, grey) {
+angular.module('angular-echarts.theme', []).factory('theme', ['infographic', 'macarons', 'shine', 'dark', 'blue', 'green', 'red', 'tech', function (infographic, macarons, shine, dark, blue, green, red, tech) {
     var themes = {
         infographic: infographic,
         macarons: macarons,
@@ -528,7 +528,7 @@ angular.module('angular-echarts.theme', []).factory('theme', ['infographic', 'ma
         blue: blue,
         green: green,
         red: red,
-        grey: grey,
+        tech: tech,
     };
 
     return {
@@ -2492,7 +2492,16 @@ angular.module('angular-echarts.theme').factory('tech', function () {
             smooth: false,
             symbol: 'circle',
             // 拐点图形类型
-            symbolSize: 3    // 拐点图形大小
+            symbolSize: 3,
+            // 拐点图形大小
+            itemStyle: {
+                normal: {
+                    lineStyle: {
+                        // 线条样式
+                        width: 1
+                    }
+                }
+            }
         },
         // K线图默认参数
         k: {

@@ -184,7 +184,14 @@ angular.module('angular-echarts.theme').factory('tech', function () {
         line: {
             smooth: false,
             symbol: 'circle',   // 拐点图形类型
-            symbolSize: 3       // 拐点图形大小
+            symbolSize: 3,      // 拐点图形大小
+            itemStyle: {
+                normal: {
+                    lineStyle: {    // 线条样式
+                        width: 1
+                    }
+                }
+            }
         },
 
         // K线图默认参数
