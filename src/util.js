@@ -52,7 +52,7 @@ angular.module('angular-echarts.util', []).factory('util', function () {
                 name: serie.name,
                 data: datapoints,
                 symbol: serie.symbol,
-                symbolSize: serie.symbolSize | [2, 4]
+                symbolSize: serie.symbolSize | 2
             };
 
             // area chart is actually line chart with special itemStyle
