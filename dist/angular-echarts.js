@@ -22,7 +22,7 @@ function getLinkFunction($http, theme, util, type) {
                 showYAxis: true,
                 showLegend: true
             }, config);
-            var grid = {
+            var grid = config.grid || {
                     x: '3.5%',
                     x2: '3.5%',
                     y: '10%',
