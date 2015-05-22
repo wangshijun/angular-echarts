@@ -64,6 +64,7 @@ function getLinkFunction($http, theme, util, type) {
                 xAxis: [ angular.extend(xAxis, util.getAxisTicks(data, config, type)) ],
                 yAxis: [ yAxis ],
                 series: util.getSeries(data, config, type),
+                grid: grid
             };
 
             if (!config.showXAxis) {
@@ -91,14 +92,19 @@ function getLinkFunction($http, theme, util, type) {
                 delete options.yAxis;
             }
 
+            if (util.isPieChart(type)) {
+                if(config.calculable) {
+                    options.calculable = config.calculable;
+                }
+                delete options.grid;
+            }
+
             if (config.dataZoom) {
                 options.dataZoom = angular.extend({
                     show : true,
                     realtime : true
                 }, config.dataZoom);
             }
-
-            options.grid = grid;
 
             return options;
         }
