@@ -22,7 +22,7 @@ function getLinkFunction($http, theme, util, type) {
                 showYAxis: true,
                 showLegend: true
             }, config);
-            var grid = {
+            var grid = config.grid || {
                     x: '3.5%',
                     x2: '3.5%',
                     y: '10%',
@@ -51,7 +51,8 @@ function getLinkFunction($http, theme, util, type) {
                     toolbox: angular.extend({ show: false }, angular.isObject(config.toolbox) ? config.toolbox : {}),
                     xAxis: [ angular.extend(xAxis, util.getAxisTicks(data, config, type)) ],
                     yAxis: [ yAxis ],
-                    series: util.getSeries(data, config, type)
+                    series: util.getSeries(data, config, type),
+                    grid: grid
                 };
             if (!config.showXAxis) {
                 angular.forEach(options.xAxis, function (axis) {
@@ -74,13 +75,18 @@ function getLinkFunction($http, theme, util, type) {
                 delete options.xAxis;
                 delete options.yAxis;
             }
+            if (util.isPieChart(type)) {
+                if (config.calculable) {
+                    options.calculable = config.calculable;
+                }
+                delete options.grid;
+            }
             if (config.dataZoom) {
                 options.dataZoom = angular.extend({
                     show: true,
                     realtime: true
                 }, config.dataZoom);
             }
-            options.grid = grid;
             return options;
         }
         var isAjaxInProgress = false;
@@ -286,7 +292,7 @@ angular.module('angular-echarts.util', []).factory('util', function () {
                     name: serie.name,
                     data: datapoints,
                     symbol: serie.symbol,
-                    symbolSize: serie.symbolSize | [2, 4]
+                    symbolSize: serie.symbolSize | 2
                 };
             // area chart is actually line chart with special itemStyle
             if (type === 'area') {
@@ -395,21 +401,8 @@ angular.module('angular-echarts.util', []).factory('util', function () {
                 } else if (type === 'pie') {
                     conf = angular.extend(conf, {
                         itemStyle: {
-                            normal: {
-                                label: {
-                                    position: 'inner',
-                                    formatter: function (a, b, c, d) {
-                                        return (d - 0).toFixed(0) + '%';
-                                    }
-                                },
-                                labelLine: { show: false }
-                            },
-                            emphasis: {
-                                label: {
-                                    show: true,
-                                    formatter: '{b}\n{d}%'
-                                }
-                            }
+                            normal: {},
+                            emphasis: {}
                         }
                     }, config.pie || {});
                 }
@@ -528,13 +521,13 @@ angular.module('angular-echarts.theme', []).factory('theme', ['infographic', 'ma
         blue: blue,
         green: green,
         red: red,
-        tech: tech,
+        tech: tech
     };
 
     return {
         get: function (name) {
             return themes[name] ? themes[name] : {};
-        },
+        }
     };
 
 }]);

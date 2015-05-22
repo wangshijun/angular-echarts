@@ -52,7 +52,7 @@ angular.module('angular-echarts.util', []).factory('util', function () {
                 name: serie.name,
                 data: datapoints,
                 symbol: serie.symbol,
-                symbolSize: serie.symbolSize | [2, 4]
+                symbolSize: serie.symbolSize | 2
             };
 
             // area chart is actually line chart with special itemStyle
@@ -157,19 +157,8 @@ angular.module('angular-echarts.util', []).factory('util', function () {
                     conf = angular.extend(conf, {
                         itemStyle: {
                             normal : {
-                                label : {
-                                    position : 'inner',
-                                    formatter : function (a,b,c,d) {return (d - 0).toFixed(0) + '%'}
-                                },
-                                labelLine : {
-                                    show : false
-                                }
                             },
                             emphasis : {
-                                label : {
-                                show : true,
-                                    formatter : "{b}\n{d}%"
-                                }
                             }
                         }
                     }, config.pie || {});

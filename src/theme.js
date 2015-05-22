@@ -13,13 +13,13 @@ angular.module('angular-echarts.theme', []).factory('theme', ['infographic', 'ma
         blue: blue,
         green: green,
         red: red,
-        tech: tech,
+        tech: tech
     };
 
     return {
         get: function (name) {
             return themes[name] ? themes[name] : {};
-        },
+        }
     };
 
 }]);
