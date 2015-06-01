@@ -11,6 +11,7 @@
 
     <link rel="stylesheet" href="../vendor/bootstrap/dist/css/bootstrap.min.css" />
     <script src="../vendor/baidu-echarts/build/echarts-plain-original.js"></script>
+    <script src="../vendor/baidu-echarts/build/echarts-plain-map.js"></script>
     <script src="../vendor/angular/angular.min.js"></script>
     <!-- <script src="../dist/angular&#45;echarts.min.js"></script> -->
     <script src="../src/directive.js"></script>
@@ -52,6 +53,10 @@
         </div>
     </div>
     <div class="row">
+        <div class="col-md-3" ng-controller="MapChartController">
+            <map-chart config="config.nation" data="data.nation"></map-chart>
+            <map-chart config="config.province" data="data.province" ng-show="showDetail"></map-chart>
+        </div>
         <div class="col-md-3" ng-controller="GaugeChartController">
             <gauge-chart config="config" data="data"></gauge-chart>
         </div>
