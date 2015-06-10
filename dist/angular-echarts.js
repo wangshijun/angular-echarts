@@ -20,7 +20,8 @@ function getLinkFunction($http, theme, util, type) {
             config = angular.extend({
                 showXAxis: true,
                 showYAxis: true,
-                showLegend: true
+                showLegend: true,
+                showGrid: true
             }, config);
             var grid = {
                     x: 0,
@@ -67,7 +68,7 @@ function getLinkFunction($http, theme, util, type) {
                     axis.axisTick = { show: false };
                 });
             }
-            if (!config.showLegend || type === 'gauge') {
+            if (!config.showLegend || type === 'gauge' || type === 'map') {
                 delete options.legend;
             }
             if (!util.isAxisChart(type)) {
@@ -81,6 +82,9 @@ function getLinkFunction($http, theme, util, type) {
                 }, config.dataZoom);
             }
             options.grid = grid;
+            if (!config.showGrid || type === 'gauge' || type === 'map' || type === 'pie' || type === 'donut') {
+                delete options.grid;
+            }
             return options;
         }
         var isAjaxInProgress = false;
@@ -98,6 +102,11 @@ function getLinkFunction($http, theme, util, type) {
             getSizes(scope.config);
             if (!chart) {
                 chart = echarts.init(dom, theme.get(scope.config.theme || 'macarons'));
+            }
+            if (scope.config.event) {
+                chart.on(scope.config.event.type, function (param) {
+                    scope.config.event.fn(param);
+                });
             }
             // string type for data param is assumed to ajax datarequests
             if (angular.isString(scope.data)) {
@@ -238,6 +247,16 @@ angular.module('angular-echarts', ['angular-echarts.theme', 'angular-echarts.uti
             },
             link: getLinkFunction($http, theme, util, 'gauge')
         };
+    }]).directive('mapChart', ['$http', 'theme', 'util', function ($http, theme, util) {
+        return {
+            restrict: 'EA',
+            template: '<div></div>',
+            scope: {
+                config: '=config',
+                data: '=data'
+            },
+            link: getLinkFunction($http, theme, util, 'map')
+        };
     }]);
 'use strict';
 /**
@@ -246,6 +265,9 @@ angular.module('angular-echarts', ['angular-echarts.theme', 'angular-echarts.uti
 angular.module('angular-echarts.util', []).factory('util', function () {
     function isPieChart(type) {
         return ['pie', 'donut'].indexOf(type) > -1;
+    }
+    function isMapChart(type) {
+        return ['map'].indexOf(type) > -1;
     }
     function isAxisChart(type) {
         return ['line', 'bar', 'area'].indexOf(type) > -1;
@@ -412,6 +434,10 @@ angular.module('angular-echarts.util', []).factory('util', function () {
                     }, config.pie || {});
                 }
             }
+            if (isMapChart(type)) {
+                conf.type = 'map';
+                conf = angular.extend(conf, {}, config.map || {});
+            }
             // if stack set to true
             if (config.stack) {
                 conf.stack = 'total';
@@ -457,12 +483,16 @@ angular.module('angular-echarts.util', []).factory('util', function () {
         case 'pie':
         case 'donut':
         case 'bar':
+        case 'map':
         case 'gauge':
             tooltip.trigger = 'item';
             break;
         }
         if (type === 'pie') {
             tooltip.formatter = '{a} <br/>{b}: {c} ({d}%)';
+        }
+        if (type === 'map') {
+            tooltip.formatter = '{b}';
         }
         return angular.extend(tooltip, angular.isObject(config.tooltip) ? config.tooltip : {});
     }
