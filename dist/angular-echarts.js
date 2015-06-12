@@ -24,7 +24,7 @@ function getLinkFunction($http, theme, util, type) {
             }, config);
             var grid = config.grid || {
                     x: '3.5%',
-                    x2: '3.5%',
+                    x2: '4%',
                     y: '10%',
                     y2: '10%'
                 };
@@ -32,17 +32,19 @@ function getLinkFunction($http, theme, util, type) {
                     orient: 'top',
                     axisLine: { show: false }
                 }, angular.isObject(config.xAxis) ? config.xAxis : {});
-            var yAxis = angular.extend({
-                    type: 'value',
-                    orient: 'right',
-                    scale: false,
-                    axisLine: { show: false },
-                    axisLabel: {
-                        formatter: function (v) {
-                            return util.formatKMBT(v);
-                        }
-                    }
-                }, angular.isObject(config.yAxis) ? config.yAxis : {});
+            var yAxis = config.yAxis instanceof Array ? config.yAxis : [ angular.extend({
+                                    type: 'value',
+                                    orient: 'right',
+                                    scale: false,
+                                    axisLine: {
+                                        show: false
+                                    },
+                                    axisLabel: {
+                                        formatter: function (v) {
+                                            return util.formatKMBT(v);
+                                        },
+                                    },
+                                }, angular.isObject(config.yAxis) ? config.yAxis : {}) ];
             // basic config
             var options = {
                     title: util.getTitle(data, config, type),
@@ -50,7 +52,7 @@ function getLinkFunction($http, theme, util, type) {
                     legend: util.getLegend(data, config, type),
                     toolbox: angular.extend({ show: false }, angular.isObject(config.toolbox) ? config.toolbox : {}),
                     xAxis: [ angular.extend(xAxis, util.getAxisTicks(data, config, type)) ],
-                    yAxis: [ yAxis ],
+                    yAxis: yAxis,
                     series: util.getSeries(data, config, type),
                     grid: grid
                 };
@@ -292,7 +294,8 @@ angular.module('angular-echarts.util', []).factory('util', function () {
                     name: serie.name,
                     data: datapoints,
                     symbol: serie.symbol,
-                    symbolSize: serie.symbolSize | 2
+                    symbolSize: serie.symbolSize | 2,
+                    yAxisIndex: serie.yAxisIndex ? serie.yAxisIndex : 0
                 };
             // area chart is actually line chart with special itemStyle
             if (type === 'area') {
