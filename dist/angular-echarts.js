@@ -39,11 +39,9 @@ function getLinkFunction($http, theme, util, type) {
                                     axisLine: {
                                         show: false
                                     },
-                                    axisLabel: {
-                                        formatter: function (v) {
-                                            return util.formatKMBT(v);
-                                        },
-                                    },
+                                    axisLabel: { 
+                                        formatter: '{value}' 
+                                    }
                                 }, angular.isObject(config.yAxis) ? config.yAxis : {}) ];
             // basic config
             var options = {
