@@ -117,5 +117,63 @@
         }, 60000);
     });
 
+    app.controller('MapChartController', function ($scope) {
+
+        $scope.config = {
+            nation: {
+                map: {
+                    mapType: 'china',
+                    selectedMode: 'single',
+                    itemStyle:{
+                        normal:{label:{show:true}},
+                        emphasis:{label:{show:true}}
+                    },
+
+                },
+                event: {
+                    type: echarts.config.EVENT.MAP_SELECTED,
+                    fn: detail
+                }
+
+            },
+            province: {
+
+            }
+        };
+
+        $scope.showDetail = false;
+
+        $scope.data = {
+            nation: [
+                {name: "全国地图"}
+            ],
+            province: [
+                {name: "省地图"}
+            ]
+        };
+        function detail(param) {
+            $scope.$apply(function () {
+                $scope.showDetail = true;
+                var selectedProvince = Object.keys(param.selected).filter(function (value) {
+                    return param.selected[value];
+                })
+                $scope.config.province = {
+                    //debug: true,
+                    map: {
+                        mapType: selectedProvince[0],
+                        selectedMode: 'single',
+                        itemStyle:{
+                            normal:{label:{show:true}},
+                            emphasis:{label:{show:true}}
+                        },
+
+                    },
+                };
+
+            })
+        }
+
+    });
+
 })();
 

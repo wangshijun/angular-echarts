@@ -27,6 +27,7 @@ function getLinkFunction($http, theme, util, type) {
                 showXAxis: true,
                 showYAxis: true,
                 showLegend: true,
+                showGrid: true,
             }, config);
 
             var grid = {
@@ -82,7 +83,7 @@ function getLinkFunction($http, theme, util, type) {
                 });
             }
 
-            if (!config.showLegend || type === 'gauge') {
+            if (!config.showLegend || type === 'gauge' || type === 'map') {
                 delete options.legend;
             }
 
@@ -99,6 +100,11 @@ function getLinkFunction($http, theme, util, type) {
             }
 
             options.grid = grid;
+
+            if (!config.showGrid || type === 'gauge' || type === 'map' || type === "pie" || type === 'donut') {
+                delete options.grid;
+            }
+
 
             return options;
         }
@@ -118,6 +124,14 @@ function getLinkFunction($http, theme, util, type) {
             if (!chart) {
                 chart = echarts.init(dom, theme.get(scope.config.theme || 'macarons'));
             }
+
+
+            if (scope.config.event) {
+                chart.on(scope.config.event.type, function (param) {
+                    scope.config.event.fn(param);
+                });
+            }
+
 
             // string type for data param is assumed to ajax datarequests
             if (angular.isString(scope.data)) {
@@ -248,6 +262,17 @@ angular.module('angular-echarts', ['angular-echarts.theme', 'angular-echarts.uti
                 data: '=data'
             },
             link: getLinkFunction($http, theme, util, 'gauge')
+        };
+    }])
+    .directive('mapChart', ['$http', 'theme', 'util', function ($http, theme, util) {
+        return {
+            restrict: 'EA',
+            template: '<div></div>',
+            scope: {
+                config: '=config',
+                data: '=data'
+            },
+            link: getLinkFunction($http, theme, util, 'map')
         };
     }]);
 

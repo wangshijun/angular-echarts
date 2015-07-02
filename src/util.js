@@ -9,6 +9,10 @@ angular.module('angular-echarts.util', []).factory('util', function () {
         return ['pie', 'donut'].indexOf(type) > -1;
     }
 
+    function isMapChart(type) {
+        return ['map'].indexOf(type) > -1;
+    }
+
     function isAxisChart(type) {
         return ['line', 'bar', 'area'].indexOf(type) > -1;
     }
@@ -174,6 +178,11 @@ angular.module('angular-echarts.util', []).factory('util', function () {
                 }
             }
 
+            if (isMapChart(type)) {
+                conf.type = 'map';
+                conf = angular.extend(conf, {}, config.map || {});
+            }
+
             // if stack set to true
             if (config.stack) {
                 conf.stack = 'total';
@@ -226,6 +235,7 @@ angular.module('angular-echarts.util', []).factory('util', function () {
             case 'pie':
             case 'donut':
             case 'bar':
+            case 'map':
             case 'gauge':
                 tooltip.trigger = 'item';
                 break;
@@ -233,6 +243,10 @@ angular.module('angular-echarts.util', []).factory('util', function () {
 
         if (type === 'pie') {
             tooltip.formatter = '{a} <br/>{b}: {c} ({d}%)';
+        }
+
+        if (type === 'map') {
+            tooltip.formatter = '{b}';
         }
 
         return angular.extend(tooltip, angular.isObject(config.tooltip) ? config.tooltip : {});
