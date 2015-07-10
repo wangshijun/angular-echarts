@@ -12,6 +12,7 @@ function getLinkFunction($http, theme, util, type) {
 
         var dom  = element.find('div')[0],
             width, height, chart;
+        var chartEvent = {};
 
         function getSizes(config) {
             width = config.width || attrs.width || 320;
@@ -99,6 +100,10 @@ function getLinkFunction($http, theme, util, type) {
                 }, config.dataZoom);
             }
 
+            if (config.dataRange) {
+                options.dataRange = angular.extend({}, config.dataRange);
+            }
+
             options.grid = grid;
 
             if (!config.showGrid || type === 'gauge' || type === 'map' || type === "pie" || type === 'donut') {
@@ -125,13 +130,22 @@ function getLinkFunction($http, theme, util, type) {
                 chart = echarts.init(dom, theme.get(scope.config.theme || 'macarons'));
             }
 
-
             if (scope.config.event) {
-                chart.on(scope.config.event.type, function (param) {
-                    scope.config.event.fn(param);
-                });
-            }
+                if (!Array.isArray(scope.config.event)) {
+                    scope.config.event = [scope.config.event];
+                }
 
+                if (Array.isArray(scope.config.event)) {
+                    scope.config.event.forEach(function (ele) {
+                        if(!chartEvent[ele.type]) {
+                            chartEvent[ele.type] = true;
+                            chart.on(ele.type, function (param) {
+                                ele.fn(param);
+                            });
+                        }
+                    })
+                }
+            }
 
             // string type for data param is assumed to ajax datarequests
             if (angular.isString(scope.data)) {
@@ -183,11 +197,6 @@ function getLinkFunction($http, theme, util, type) {
 
         // update when charts config changes
         scope.$watch(function () { return scope.config; }, function (value) {
-            if (value) { setOptions(); }
-        });
-
-        // update when charts data changes
-        scope.$watch(function () { return scope.data; }, function (value) {
             if (value) { setOptions(); }
         });
 
