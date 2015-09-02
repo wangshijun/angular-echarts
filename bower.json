@@ -1,6 +1,7 @@
 {
   "name": "angular-echarts",
   "version": "0.1.28",
+  "main": "dist/angular-echarts.js",
   "homepage": "https://github.com/wangshijun/angular-echarts",
   "authors": [
     "wangshijun2010 <wangshijun2010@gmail.com>"
