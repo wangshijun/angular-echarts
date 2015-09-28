@@ -8,7 +8,7 @@ angular.module('angular-echarts.theme').factory('tech', function () {
     return {
         // 默认色板
         color: [
-            '#1f77b4','#aec7e8','#5ab1ef','#ffb980','#d87a80',
+            '#0063a9','#ff2549','#5ab1ef','#ffb980','#d87a80',
             '#8d98b3','#e5cf0d','#97b552','#95706d','#dc69aa',
             '#07a2a4','#9a7fd1','#588dd5','#f5994e','#c05050',
             '#59678c','#c9ab00','#7eb00a','#6f5553','#c14089'
