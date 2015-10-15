@@ -110,7 +110,6 @@ function getLinkFunction($http, theme, util, type) {
                 delete options.grid;
             }
 
-
             return options;
         }
 
