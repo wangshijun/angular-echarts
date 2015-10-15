@@ -6,6 +6,7 @@
     "wangshijun2010 <wangshijun2010@gmail.com>"
   ],
   "description": "angular baidu echarts",
+  "main":"./dist/angular-echarts.min.js",
   "moduleType": [
     "globals"
   ],
