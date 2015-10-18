@@ -188,6 +188,10 @@ angular.module('angular-echarts.util', []).factory('util', function () {
                 conf.stack = 'total';
             }
 
+            if (type === 'radar') {
+                conf.data = serie.data;
+            }
+
             series.push(conf);
         });
 

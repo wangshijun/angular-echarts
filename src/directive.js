@@ -104,6 +104,10 @@ function getLinkFunction($http, theme, util, type) {
                 options.dataRange = angular.extend({}, config.dataRange);
             }
 
+            if (config.polar) {
+                options.polar = config.polar;
+            }
+
             options.grid = grid;
 
             if (!config.showGrid || type === 'gauge' || type === 'map' || type === "pie" || type === 'donut') {
@@ -285,6 +289,17 @@ angular.module('angular-echarts', ['angular-echarts.theme', 'angular-echarts.uti
                 data: '=data'
             },
             link: getLinkFunction($http, theme, util, 'map')
+        };
+    }])
+    .directive('radarChart', ['$http', 'theme', 'util', function ($http, theme, util) {
+        return {
+            restrict: 'EA',
+            template: '<div></div>',
+            scope: {
+                config: '=config',
+                data: '=data'
+            },
+            link: getLinkFunction($http, theme, util, 'radar')
         };
     }]);
 
