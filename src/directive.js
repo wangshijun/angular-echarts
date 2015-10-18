@@ -197,7 +197,11 @@ function getLinkFunction($http, theme, util, type) {
         // update when charts config changes
         scope.$watch(function () { return scope.config; }, function (value) {
             if (value) { setOptions(); }
-        });
+        }, true);
+
+        scope.$watch(function () { return scope.data; }, function (value) {
+            if (value) { setOptions(); }
+        }, true);
 
     };
 }

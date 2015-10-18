@@ -33,9 +33,16 @@
         ]
     };
 
+    function updateData($interval) {
+        $interval(function () {
+            pageload.datapoints.push({ x: pageload.datapoints[pageload.datapoints.length - 1].x, y: Math.round(Math.random() * 2000) });
+            firstPaint.datapoints.push({ x: firstPaint.datapoints[firstPaint.datapoints.length - 1].x, y: Math.round(Math.random() * 100) });
+        }, 3000);
+    }
+
     var app = angular.module('docs', ['angular-echarts']);
 
-    app.controller('LineChartController', function ($scope) {
+    app.controller('LineChartController', function ($scope, $interval) {
 
         $scope.config = {
             // title: 'Line Chart',
@@ -50,9 +57,11 @@
         $scope.data = [ pageload ];
         $scope.multiple = [pageload, firstPaint ];
 
+        // CAUTION: 这行必须放在这里，不然 angular 感知不到数据变化
+        updateData($interval);
     });
 
-    app.controller('BarChartController', function ($scope) {
+    app.controller('BarChartController', function ($scope, $interval) {
 
         $scope.config = {
             title: 'Bar Chart',
@@ -66,7 +75,7 @@
 
     });
 
-    app.controller('AreaChartController', function ($scope) {
+    app.controller('AreaChartController', function ($scope, $interval) {
 
         $scope.config = {
             title: 'Area Chart',
@@ -81,7 +90,7 @@
 
     });
 
-    app.controller('PieChartController', function ($scope) {
+    app.controller('PieChartController', function ($scope, $interval) {
 
         $scope.config = {
             title: 'Pie Chart',
@@ -92,7 +101,7 @@
         $scope.data = [ pageload ];
     });
 
-    app.controller('GaugeChartController', function ($scope) {
+    app.controller('GaugeChartController', function ($scope, $interval) {
 
         $scope.config = {
             debug: true,
@@ -117,7 +126,7 @@
         }, 60000);
     });
 
-    app.controller('MapChartController', function ($scope) {
+    app.controller('MapChartController', function ($scope, $interval) {
 
         $scope.config = {
             nation: {
