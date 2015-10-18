@@ -219,10 +219,6 @@
                 ]
             }
         ];
-
-        $interval(function () {
-            $scope.data = '/data.php?ts=' + Date.now();
-        }, 60000);
     });
 
 })();
