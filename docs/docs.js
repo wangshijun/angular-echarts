@@ -184,5 +184,46 @@
 
     });
 
+    app.controller('RadarChartController', function ($scope, $interval) {
+
+        $scope.config = {
+            width: 600,
+            height: 450,
+            polar : [
+                {
+                    indicator : [
+                        { text: '销售（sales）', max: 6000},
+                        { text: '管理（Administration）', max: 16000},
+                        { text: '信息技术（Information Techology）', max: 30000},
+                        { text: '客服（Customer Support）', max: 38000},
+                        { text: '研发（Development）', max: 52000},
+                        { text: '市场（Marketing）', max: 25000}
+                    ]
+                }
+            ],
+        };
+
+        $scope.data = [
+            {
+                name: '预算 vs 开销（Budget vs spending）',
+                type: 'radar',
+                data : [
+                    {
+                        value : [4300, 10000, 28000, 35000, 50000, 19000],
+                        name : '预算分配（Allocated Budget）'
+                    },
+                    {
+                        value : [5000, 14000, 28000, 31000, 42000, 21000],
+                        name : '实际开销（Actual Spending）'
+                    }
+                ]
+            }
+        ];
+
+        $interval(function () {
+            $scope.data = '/data.php?ts=' + Date.now();
+        }, 60000);
+    });
+
 })();
 

@@ -29,40 +29,55 @@
 
 <body class="ng-cloak" ng-app="docs">
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-3" ng-controller="LineChartController">
-            <line-chart config="config" data="data"></line-chart>
-            <line-chart config="config" data="multiple"></line-chart>
-        </div>
+<div class="container">
 
-        <div class="col-md-3" ng-controller="BarChartController">
-            <bar-chart config="config" data="data"></bar-chart>
-            <bar-chart config="config" data="multiple"></bar-chart>
-        </div>
+    <h2 class="page-header">Angular Echarts <small>Angular bindings for baidu echarts</small></h2>
 
-        <div class="col-md-3" ng-controller="AreaChartController">
-            <area-chart config="config" data="data"></area-chart>
-            <area-chart config="config" data="multiple"></area-chart>
-        </div>
-
-        <div class="col-md-3" ng-controller="PieChartController">
-            <pie-chart config="config" data="data"></pie-chart>
-            <donut-chart config="config" data="data"></donut-chart>
-        </div>
+    <h3 class="page-header">Line Chart</h3>
+    <div ng-controller="LineChartController">
+        <line-chart config="config" data="data"></line-chart>
+        <line-chart config="config" data="multiple"></line-chart>
     </div>
-    <div class="row">
-        <div class="col-md-3" ng-controller="MapChartController">
-            <map-chart config="config.nation" data="data.nation"></map-chart>
-            <map-chart config="config.province" data="data.province" ng-show="showDetail"></map-chart>
-        </div>
-        <div class="col-md-3" ng-controller="GaugeChartController">
-            <gauge-chart config="config" data="data"></gauge-chart>
-        </div>
-        <div class="col-md-3" ng-controller="AjaxChartController">
-            <line-chart config="config" data="data" width="480" height="320"></line-chart>
-        </div>
+
+    <h3 class="page-header">Bar Chart</h3>
+    <div ng-controller="BarChartController">
+        <bar-chart config="config" data="data"></bar-chart>
+        <bar-chart config="config" data="multiple"></bar-chart>
     </div>
+
+    <h3 class="page-header">Area Chart</h3>
+    <div ng-controller="AreaChartController">
+        <area-chart config="config" data="data"></area-chart>
+        <area-chart config="config" data="multiple"></area-chart>
+    </div>
+
+    <h3 class="page-header">Pie Chart</h3>
+    <div ng-controller="PieChartController">
+        <pie-chart config="config" data="data"></pie-chart>
+        <donut-chart config="config" data="data"></donut-chart>
+    </div>
+
+    <h3 class="page-header">Gauge Chart</h3>
+    <div ng-controller="GaugeChartController">
+        <gauge-chart config="config" data="data"></gauge-chart>
+    </div>
+
+    <h3 class="page-header">Radar Chart</h3>
+    <div ng-controller="RadarChartController">
+        <radar-chart config="config" data="data"></radar-chart>
+    </div>
+
+    <h3 class="page-header">Map Chart</h3>
+    <div ng-controller="MapChartController">
+        <map-chart config="config.nation" data="data.nation"></map-chart>
+        <map-chart config="config.province" data="data.province" ng-show="showDetail"></map-chart>
+    </div>
+
+    <h3 class="page-header">Ajax Data</h3>
+    <div ng-controller="AjaxChartController">
+        <line-chart config="config" data="data" width="480" height="320"></line-chart>
+    </div>
+
 </div>
 
 </body>
