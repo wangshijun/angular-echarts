@@ -187,7 +187,14 @@ function getLinkFunction($http, theme, util, type) {
             if (value) {
                 setOptions();
             }
-        });
+        }, true);
+        scope.$watch(function () {
+            return scope.data;
+        }, function (value) {
+            if (value) {
+                setOptions();
+            }
+        }, true);
     };
 }
 /**
