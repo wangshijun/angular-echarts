@@ -213,93 +213,21 @@ function getLinkFunction($http, theme, util, type) {
 /**
  * add directives
  */
-angular.module('angular-echarts', ['angular-echarts.theme', 'angular-echarts.util'])
-    .directive('lineChart', ['$http', 'theme', 'util', function ($http, theme, util) {
-        return {
-            restrict: 'EA',
-            template: '<div></div>',
-            scope: {
-                config: '=config',
-                data: '=data'
-            },
-            link: getLinkFunction($http, theme, util, 'line')
-        };
-    }])
-    .directive('barChart', ['$http', 'theme', 'util', function ($http, theme, util) {
-        return {
-            restrict: 'EA',
-            template: '<div></div>',
-            scope: {
-                config: '=config',
-                data: '=data'
-            },
-            link: getLinkFunction($http, theme, util, 'bar')
-        };
-    }])
-    .directive('areaChart', ['$http', 'theme', 'util', function ($http, theme, util) {
-        return {
-            restrict: 'EA',
-            template: '<div></div>',
-            scope: {
-                config: '=config',
-                data: '=data'
-            },
-            link: getLinkFunction($http, theme, util, 'area')
-        };
-    }])
-    .directive('pieChart', ['$http', 'theme', 'util', function ($http, theme, util) {
-        return {
-            restrict: 'EA',
-            template: '<div></div>',
-            scope: {
-                config: '=config',
-                data: '=data'
-            },
-            link: getLinkFunction($http, theme, util, 'pie')
-        };
-    }])
-    .directive('donutChart', ['$http', 'theme', 'util', function ($http, theme, util) {
-        return {
-            restrict: 'EA',
-            template: '<div></div>',
-            scope: {
-                config: '=config',
-                data: '=data'
-            },
-            link: getLinkFunction($http, theme, util, 'donut')
-        };
-    }])
-    .directive('gaugeChart', ['$http', 'theme', 'util', function ($http, theme, util) {
-        return {
-            restrict: 'EA',
-            template: '<div></div>',
-            scope: {
-                config: '=config',
-                data: '=data'
-            },
-            link: getLinkFunction($http, theme, util, 'gauge')
-        };
-    }])
-    .directive('mapChart', ['$http', 'theme', 'util', function ($http, theme, util) {
-        return {
-            restrict: 'EA',
-            template: '<div></div>',
-            scope: {
-                config: '=config',
-                data: '=data'
-            },
-            link: getLinkFunction($http, theme, util, 'map')
-        };
-    }])
-    .directive('radarChart', ['$http', 'theme', 'util', function ($http, theme, util) {
-        return {
-            restrict: 'EA',
-            template: '<div></div>',
-            scope: {
-                config: '=config',
-                data: '=data'
-            },
-            link: getLinkFunction($http, theme, util, 'radar')
-        };
-    }]);
+var app = angular.module('angular-echarts', ['angular-echarts.theme', 'angular-echarts.util']);
+var types = ['line', 'bar', 'area', 'pie', 'donut', 'gauge', 'map', 'radar'];
+for (var i = 0, n = types.length; i < n; i++) {
+    (function (type) {
+        app.directive(type + 'Chart', ['$http', 'theme', 'util', function ($http, theme, util) {
+            return {
+                restrict: 'EA',
+                template: '<div></div>',
+                scope: {
+                    config: '=config',
+                    data: '=data'
+                },
+                link: getLinkFunction($http, theme, util, type)
+            };
+        }]);
+    })(types[i]);
+}
 
