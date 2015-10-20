@@ -10,16 +10,19 @@ function getLinkFunction($http, theme, util, type) {
     return function (scope, element, attrs) {
         scope.config = scope.config || {};
 
-        var dom  = element.find('div')[0],
+        var ndWrapper  = element.find('div')[0],
+            ndParent = element.parent()[0],
+            parentWidth = ndParent.clientWidth,
+            parentHeight = ndParent.clientHeight,
             width, height, chart;
         var chartEvent = {};
 
         function getSizes(config) {
-            width = config.width || attrs.width || 320;
-            height = config.height || attrs.height || 240;
+            width = config.width || parseInt(attrs.width) || parentWidth || 320;
+            height = config.height || parseInt(attrs.height) || parentHeight || 240;
 
-            dom.style.width = width + 'px';
-            dom.style.height = height + 'px';
+            ndWrapper.style.width = width + 'px';
+            ndWrapper.style.height = height + 'px';
         }
 
         function getOptions(data, config, type) {
@@ -28,15 +31,7 @@ function getLinkFunction($http, theme, util, type) {
                 showXAxis: true,
                 showYAxis: true,
                 showLegend: true,
-                showGrid: true,
             }, config);
-
-            var grid = {
-                x: 0,
-                y: 5,
-                width: width - 5,
-                height: height - 35,
-            };
 
             var xAxis = angular.extend({
                 orient: 'top',
@@ -108,12 +103,6 @@ function getLinkFunction($http, theme, util, type) {
                 options.polar = config.polar;
             }
 
-            options.grid = grid;
-
-            if (!config.showGrid || type === 'gauge' || type === 'map' || type === "pie" || type === 'donut') {
-                delete options.grid;
-            }
-
             return options;
         }
 
@@ -130,7 +119,7 @@ function getLinkFunction($http, theme, util, type) {
             getSizes(scope.config);
 
             if (!chart) {
-                chart = echarts.init(dom, theme.get(scope.config.theme || 'macarons'));
+                chart = echarts.init(ndWrapper, theme.get(scope.config.theme || 'macarons'));
             }
 
             if (scope.config.event) {
@@ -146,7 +135,7 @@ function getLinkFunction($http, theme, util, type) {
                                 ele.fn(param);
                             });
                         }
-                    })
+                    });
                 }
             }
 
