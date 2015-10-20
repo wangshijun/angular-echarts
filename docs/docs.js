@@ -130,6 +130,8 @@
 
         $scope.config = {
             nation: {
+                width: 600,
+                height: 450,
                 map: {
                     mapType: 'china',
                     selectedMode: 'single',
