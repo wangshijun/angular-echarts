@@ -161,7 +161,7 @@ angular.module('angular-echarts.util', []).factory('util', function () {
                             normal : {
                                 label : {
                                     position : 'inner',
-                                    formatter : function (a,b,c,d) {return (d - 0).toFixed(0) + '%'}
+                                    formatter : function (a,b,c,d) { return (d - 0).toFixed(0) + '%'; }
                                 },
                                 labelLine : {
                                     show : false
@@ -170,7 +170,7 @@ angular.module('angular-echarts.util', []).factory('util', function () {
                             emphasis : {
                                 label : {
                                 show : true,
-                                    formatter : "{b}\n{d}%"
+                                    formatter : '{b}\n{d}%'
                                 }
                             }
                         }
@@ -217,9 +217,7 @@ angular.module('angular-echarts.util', []).factory('util', function () {
             angular.forEach(data, function (serie) {
                 legend.data.push(serie.name);
             });
-            legend.orient = 'verticle';
-            legend.x = 52;
-            legend.y = config.subtitle ? 54 : 30;
+            legend.orient = 'horizontal';
         }
 
         return angular.extend(legend, config.legend || {});
