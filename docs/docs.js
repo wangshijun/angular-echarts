@@ -13,7 +13,7 @@
             { x: 2007, y: 1023 },
             { x: 2008, y: 1090 },
             { x: 2009, y: 1012 },
-            { x: 2010, y: 1012 },
+            { x: 2010, y: 1012 }
         ]
     };
 
@@ -29,7 +29,7 @@
             { x: 2007, y: 63 },
             { x: 2008, y: 80 },
             { x: 2009, y: 20 },
-            { x: 2010, y: 25 },
+            { x: 2010, y: 25 }
         ]
     };
 
@@ -51,7 +51,7 @@
             showXAxis: true,
             showYAxis: true,
             showLegend: true,
-            stack: false,
+            stack: false
         };
 
         $scope.data = [ pageload ];
@@ -61,13 +61,13 @@
         updateData($interval);
     });
 
-    app.controller('BarChartController', function ($scope, $interval) {
+    app.controller('BarChartController', function ($scope) {
 
         $scope.config = {
             title: 'Bar Chart',
             subtitle: 'Bar Chart Subtitle',
             debug: true,
-            stack: true,
+            stack: true
         };
 
         $scope.data = [ pageload ];
@@ -75,14 +75,14 @@
 
     });
 
-    app.controller('AreaChartController', function ($scope, $interval) {
+    app.controller('AreaChartController', function ($scope) {
 
         $scope.config = {
             title: 'Area Chart',
             subtitle: 'Area Chart Subtitle',
             yAxis: { scale: true },
             debug: true,
-            stack: true,
+            stack: true
         };
 
         $scope.data = [ pageload ];
@@ -90,21 +90,21 @@
 
     });
 
-    app.controller('PieChartController', function ($scope, $interval) {
+    app.controller('PieChartController', function ($scope) {
 
         $scope.config = {
             title: 'Pie Chart',
             subtitle: 'Pie Chart Subtitle',
-            debug: true,
+            debug: true
         };
 
         $scope.data = [ pageload ];
     });
 
-    app.controller('GaugeChartController', function ($scope, $interval) {
+    app.controller('GaugeChartController', function ($scope) {
 
         $scope.config = {
-            debug: true,
+            debug: true
         };
 
         $scope.data = [ pageload ];
@@ -114,19 +114,19 @@
 
         $scope.config = {
             debug: true,
-            showXAxis: false,
+            showXAxis: false
             // width: 480,
             // height: 320,
         };
 
-        $scope.data = '/data.php';
+        $scope.data = './data.json';
 
         $interval(function () {
-            $scope.data = '/data.php?ts=' + Date.now();
-        }, 60000);
+            $scope.data = './data.json';
+        }, 3000);
     });
 
-    app.controller('MapChartController', function ($scope, $interval) {
+    app.controller('MapChartController', function ($scope) {
 
         $scope.config = {
             nation: {
@@ -138,8 +138,7 @@
                     itemStyle:{
                         normal:{label:{show:true}},
                         emphasis:{label:{show:true}}
-                    },
-
+                    }
                 },
                 event: {
                     type: echarts.config.EVENT.MAP_SELECTED,
@@ -167,7 +166,7 @@
                 $scope.showDetail = true;
                 var selectedProvince = Object.keys(param.selected).filter(function (value) {
                     return param.selected[value];
-                })
+                });
                 $scope.config.province = {
                     //debug: true,
                     map: {
@@ -176,9 +175,9 @@
                         itemStyle:{
                             normal:{label:{show:true}},
                             emphasis:{label:{show:true}}
-                        },
+                        }
 
-                    },
+                    }
                 };
 
             })
@@ -186,7 +185,7 @@
 
     });
 
-    app.controller('RadarChartController', function ($scope, $interval) {
+    app.controller('RadarChartController', function ($scope) {
 
         $scope.config = {
             width: 600,
@@ -202,7 +201,7 @@
                         { text: '市场（Marketing）', max: 25000}
                     ]
                 }
-            ],
+            ]
         };
 
         $scope.data = [
