@@ -10,18 +10,18 @@ You will need the following things properly installed on your computer.
 
 ## Building
 
-- Preparing
+- Preparing  
 `bower install` & `npm install`
 
-- default
+- default  
 `gulp`
 > develop with realtime monitor, automatic open browser to view example
 
-- build
+- build  
 `gulp build`
 > Build file to dist
 
-- publish
+- publish  
 `gulp publish`
 > Build & bump npm versions
 
