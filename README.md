@@ -8,7 +8,7 @@ You will need the following things properly installed on your computer.
 
 * [Node.js](http://nodejs.org/) (with NPM) and [Bower](http://bower.io/)
 
-## Building AngularJS
+## Building
 
 - Preparing
 `bower install` & `npm install`
