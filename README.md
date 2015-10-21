@@ -8,6 +8,23 @@ You will need the following things properly installed on your computer.
 
 * [Node.js](http://nodejs.org/) (with NPM) and [Bower](http://bower.io/)
 
+## Building AngularJS
+
+- Preparing
+`bower install` & `npm install`
+
+- default
+`gulp`
+> develop with realtime monitor, automatic open browser to view example
+
+- build
+`gulp build`
+> Build file to dist
+
+- publish
+`gulp publish`
+> Build & bump npm versions
+
 ## Usage
 
 Install bower dependency and save for production
