@@ -35,8 +35,10 @@
 
     function updateData($interval) {
         $interval(function () {
-            pageload.datapoints.push({ x: pageload.datapoints[pageload.datapoints.length - 1].x, y: Math.round(Math.random() * 2000) });
-            firstPaint.datapoints.push({ x: firstPaint.datapoints[firstPaint.datapoints.length - 1].x, y: Math.round(Math.random() * 100) });
+            pageload.datapoints.push({ x: pageload.datapoints[pageload.datapoints.length - 1].x + 1, y: Math.round(Math.random() * 2000) });
+            firstPaint.datapoints.push({ x: firstPaint.datapoints[firstPaint.datapoints.length - 1].x + 1, y: Math.round(Math.random() * 100) });
+            pageload.datapoints.shift();
+            firstPaint.datapoints.shift();
         }, 3000);
     }
 
@@ -119,10 +121,10 @@
             // height: 320,
         };
 
-        $scope.data = './data.json';
+        $scope.data = './docs/data.json';
 
         $interval(function () {
-            $scope.data = './data.json';
+            $scope.data = './docs/data.json';
         }, 3000);
     });
 
