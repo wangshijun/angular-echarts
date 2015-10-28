@@ -1,6 +1,6 @@
 {
   "name": "angular-echarts",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "description": "angular baidu echart directives",
   "main": "index.js",
   "scripts": {
