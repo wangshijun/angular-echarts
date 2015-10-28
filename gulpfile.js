@@ -2,6 +2,29 @@
 
 var gulp    = require('gulp');
 var plugins = require('gulp-load-plugins')();
+var browserSync = require('browser-sync');
+
+/**
+ * Keep multiple browsers & devices in sync when building websites.
+ */
+gulp.task('browser-sync', function() {
+
+    browserSync.init({
+        server: {
+            baseDir: "./"
+        }
+    });
+
+});
+
+/**
+ * Watching file change & rebuild
+ */
+gulp.task('watch', function () {
+
+    gulp.watch(['src/**/*.js', 'docs/**/*.[js,html]'], ['build']);
+
+});
 
 /**
  * build Tasks
@@ -24,6 +47,11 @@ gulp.task('build', function () {
         .pipe(gulp.dest('dist'));
 
 });
+
+/**
+ * developing: rebuild after coding
+ */
+gulp.task('default', ['build', 'browser-sync', 'watch']);
 
 /**
  * publish: build then bump version

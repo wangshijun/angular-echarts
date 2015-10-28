@@ -30,7 +30,7 @@ function getLinkFunction($http, theme, util, type) {
             config = angular.extend({
                 showXAxis: true,
                 showYAxis: true,
-                showLegend: true,
+                showLegend: true
             }, config);
 
             var xAxis = angular.extend({
@@ -48,8 +48,8 @@ function getLinkFunction($http, theme, util, type) {
                 axisLabel: {
                     formatter: function (v) {
                         return util.formatKMBT(v);
-                    },
-                },
+                    }
+                }
             }, angular.isObject(config.yAxis) ? config.yAxis : {});
 
             // basic config
@@ -60,7 +60,7 @@ function getLinkFunction($http, theme, util, type) {
                 toolbox: angular.extend({ show: false }, angular.isObject(config.toolbox) ? config.toolbox : {}),
                 xAxis: [ angular.extend(xAxis, util.getAxisTicks(data, config, type)) ],
                 yAxis: [ yAxis ],
-                series: util.getSeries(data, config, type),
+                series: util.getSeries(data, config, type)
             };
 
             if (!config.showXAxis) {
