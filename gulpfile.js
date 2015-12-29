@@ -5,6 +5,18 @@ var plugins = require('gulp-load-plugins')();
 var browserSync = require('browser-sync');
 
 /**
+ * Run a webserver (with LiveReload)
+ */
+gulp.task('server', function() {
+    plugins.connect.server({
+        root: '.',
+        fallback: './index.html',
+        port: 8080,
+        livereload: true
+    });
+});
+
+/**
  * Keep multiple browsers & devices in sync when building websites.
  */
 gulp.task('browser-sync', function() {
@@ -51,7 +63,7 @@ gulp.task('build', function () {
 /**
  * developing: rebuild after coding
  */
-gulp.task('default', ['build', 'browser-sync', 'watch']);
+gulp.task('default', ['build', 'browser-sync', 'watch', 'server']);
 
 /**
  * publish: build then bump version
