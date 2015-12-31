@@ -161,7 +161,9 @@ angular.module('angular-echarts.util', []).factory('util', function () {
                             normal : {
                                 label : {
                                     position : 'inner',
-                                    formatter : function (a,b,c,d) { return (d - 0).toFixed(0) + '%'; }
+                                    formatter : function (item) {
+                                        return (+item.percent).toFixed() + '%';
+                                    }
                                 },
                                 labelLine : {
                                     show : false
