@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
 
     <link rel="stylesheet" href="vendor/bootstrap/dist/css/bootstrap.min.css" />
-    <script src="vendor/echarts/build/dist/echarts-all.js"></script>
+    <script src="vendor/echarts/dist/echarts.js"></script>
     <script src="vendor/angular/angular.min.js"></script>
     <!-- <script src="../dist/angular&#45;echarts.min.js"></script> -->
     <script src="src/directive.js"></script>
@@ -32,12 +32,13 @@
 <div class="container">
 
     <h2 class="page-header">Angular Echarts <small>Angular bindings for baidu echarts</small></h2>
-
+     
     <h3 class="page-header">Line Chart</h3>
     <div ng-controller="LineChartController">
         <line-chart config="config" data="data"></line-chart>
         <line-chart config="config" data="multiple"></line-chart>
     </div>
+       
 
     <h3 class="page-header">Bar Chart</h3>
     <div ng-controller="BarChartController">

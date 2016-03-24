@@ -128,7 +128,8 @@ angular.module('angular-echarts.util', []).factory('util', function () {
 
                 // pie chart need special radius, center config
                 conf.center = config.center || ['40%', '50%'];
-                conf.radius = config.radius || '60%';
+                conf.radius = config.radius || ['40%', '55%'];
+                conf.name = config.name || '';
 
                 // donut chart require special itemStyle
                 if (type === 'donut') {
@@ -193,7 +194,6 @@ angular.module('angular-echarts.util', []).factory('util', function () {
             if (type === 'radar') {
                 conf.data = serie.data;
             }
-
             series.push(conf);
         });
 
