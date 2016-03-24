@@ -34,12 +34,12 @@
     };
 
     function updateData($interval) {
-        $interval(function () {
+/*        $interval(function () {
             pageload.datapoints.push({ x: pageload.datapoints[pageload.datapoints.length - 1].x + 1, y: Math.round(Math.random() * 2000) });
             firstPaint.datapoints.push({ x: firstPaint.datapoints[firstPaint.datapoints.length - 1].x + 1, y: Math.round(Math.random() * 100) });
             pageload.datapoints.shift();
             firstPaint.datapoints.shift();
-        }, 3000);
+        }, 3000);*/
     }
 
     var app = angular.module('docs', ['angular-echarts']);
@@ -97,9 +97,29 @@
         $scope.config = {
             title: 'Pie Chart',
             subtitle: 'Pie Chart Subtitle',
-            debug: true
-        };
+            debug: true,
+            legend: {
+                orient: 'vertical',
+                x: 'left',
+                data:['2001','2002']
+            },
+            name: '访问来源',
+            series : {
+                            name: '访问来源',
+                            type: 'pie',
+                            radius : '55%',
+                            center: ['50%', '60%'],
+                            itemStyle: {
+                                emphasis: {
+                                    shadowBlur: 10,
+                                    shadowOffsetX: 0,
+                                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                }
+                            }
+                    }
+                    
 
+        };
         $scope.data = [ pageload ];
     });
 
@@ -121,7 +141,7 @@
             // height: 320,
         };
 
-        $scope.data = './docs/data.json';
+        //$scope.data = './docs/data.json';
 
         $interval(function () {
             $scope.data = './docs/data.json';
@@ -143,7 +163,7 @@
                     }
                 },
                 event: {
-                    type: echarts.config.EVENT.MAP_SELECTED,
+                    //type: echarts.config.EVENT.MAP_SELECTED,
                     fn: detail
                 }
 
@@ -225,4 +245,3 @@
     });
 
 })();
-

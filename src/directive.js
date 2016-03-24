@@ -52,6 +52,9 @@ function getLinkFunction($http, theme, util, type) {
                 }
             }, angular.isObject(config.yAxis) ? config.yAxis : {});
 
+            if(type == 'pie') {
+                console.log(util.getSeries(data, config, type));
+            }
             // basic config
             var options = {
                 title: util.getTitle(data, config, type),
@@ -219,4 +222,3 @@ for (var i = 0, n = types.length; i < n; i++) {
         }]);
     })(types[i]);
 }
-
