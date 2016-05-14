@@ -81,6 +81,9 @@ function getLinkFunction($http, theme, util, type) {
             if (config.polar) {
                 options.polar = config.polar;
             }
+            if (config.grid) {
+                options.grid = config.grid;
+            }
             return options;
         }
         var isAjaxInProgress = false;
@@ -369,8 +372,8 @@ angular.module('angular-echarts.util', []).factory('util', function () {
                             normal: {
                                 label: {
                                     position: 'inner',
-                                    formatter: function (a, b, c, d) {
-                                        return (d - 0).toFixed(0) + '%';
+                                    formatter: function (item) {
+                                        return (+item.percent).toFixed() + '%';
                                     }
                                 },
                                 labelLine: { show: false }
