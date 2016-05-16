@@ -103,6 +103,10 @@ function getLinkFunction($http, theme, util, type) {
                 options.polar = config.polar;
             }
 
+            if (config.grid) {
+                options.grid = config.grid;
+            }
+
             return options;
         }
 
