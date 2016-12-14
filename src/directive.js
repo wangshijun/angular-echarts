@@ -60,7 +60,7 @@ function getLinkFunction($http, theme, util, type) {
                 toolbox: angular.extend({ show: false }, angular.isObject(config.toolbox) ? config.toolbox : {}),
                 xAxis: [ angular.extend(xAxis, util.getAxisTicks(data, config, type)) ],
                 yAxis: [ yAxis ],
-				graphic: config.graphic && (angular.isObject(config.graphic) || angular.isArray(config.graphic)) ? config.graphic : {},
+				graphic: config.graphic && (angular.isObject(config.graphic) || angular.isArray(config.graphic)) ? config.graphic : [],
                 series: util.getSeries(data, config, type)
             };
 
@@ -190,6 +190,7 @@ function getLinkFunction($http, theme, util, type) {
                     chart.showLoading({ text: scope.config.errorMsg || '没有数据', textStyle: textStyle });
                 }
             }
+			scope.chartObj = chart;
         }
 
         // update when charts config changes
@@ -217,7 +218,8 @@ for (var i = 0, n = types.length; i < n; i++) {
                 template: '<div></div>',
                 scope: {
                     config: '=config',
-                    data: '=data'
+                    data: '=data',
+					chartObj: '=chartObj'
                 },
                 link: getLinkFunction($http, theme, util, type)
             };
