@@ -6,7 +6,7 @@
  * @param {Service} $http, http service to make ajax requests from angular
  * @param {String} type, chart type
  */
-function getLinkFunction($http, theme, util, type) {
+function getLinkFunction($http, util, type) {
     return function (scope, element, attrs) {
         scope.config = scope.config || {};
 
@@ -61,7 +61,8 @@ function getLinkFunction($http, theme, util, type) {
                 xAxis: [ angular.extend(xAxis, util.getAxisTicks(data, config, type)) ],
                 yAxis: [ yAxis ],
                 graphic: config.graphic && (angular.isObject(config.graphic) || angular.isArray(config.graphic)) ? config.graphic : [],
-                series: util.getSeries(data, config, type)
+                series: util.getSeries(data, config, type),
+                visualMap: config.visualMap ? config.visualMap : null
             };
 
             if (!config.showXAxis) {
@@ -80,7 +81,7 @@ function getLinkFunction($http, theme, util, type) {
                 });
             }
 
-            if (!config.showLegend || type === 'gauge' || type === 'map') {
+            if (!config.showLegend || type === 'gauge') {
                 delete options.legend;
             }
 
@@ -124,7 +125,7 @@ function getLinkFunction($http, theme, util, type) {
             getSizes(scope.config);
 
             if (!chart) {
-                chart = echarts.init(ndWrapper, theme.get(scope.config.theme || 'macarons'));
+                chart = echarts.init(ndWrapper);
             }
 
             if (scope.config.event) {
@@ -153,12 +154,12 @@ function getLinkFunction($http, theme, util, type) {
                 chart.showLoading({ text: scope.config.loading || '奋力加载中...', textStyle: textStyle });
 
                 // fire data request
-                $http.get(scope.data).success(function (response) {
+                $http.get(scope.data).then(function (response) {
                     isAjaxInProgress = false;
                     chart.hideLoading();
 
-                    if (response.data) {
-                        options = getOptions(response.data, scope.config, type);
+                    if (response.data.data) {
+                        options = getOptions(response.data.data, scope.config, type);
                         if (scope.config.forceClear) {
                             chart.clear();
                         }
@@ -171,10 +172,6 @@ function getLinkFunction($http, theme, util, type) {
                     } else {
                         chart.showLoading({ text: scope.config.emptyMsg || '数据加载失败', textStyle: textStyle });
                     }
-
-                }).error(function (response) {
-                    isAjaxInProgress = false;
-                    chart.showLoading({ text: scope.config.emptyMsg || '数据加载失败', textStyle: textStyle });
                 });
 
             // if data is avaliable, render immediately
@@ -190,7 +187,7 @@ function getLinkFunction($http, theme, util, type) {
                     chart.showLoading({ text: scope.config.errorMsg || '没有数据', textStyle: textStyle });
                 }
             }
-			scope.chartObj = chart;
+            scope.chartObj = chart;
         }
 
         // update when charts config changes
@@ -208,20 +205,20 @@ function getLinkFunction($http, theme, util, type) {
 /**
  * add directives
  */
-var app = angular.module('angular-echarts', ['angular-echarts.theme', 'angular-echarts.util']);
+var app = angular.module('angular-echarts', ['angular-echarts.util']);
 var types = ['line', 'bar', 'area', 'pie', 'donut', 'gauge', 'map', 'radar'];
 for (var i = 0, n = types.length; i < n; i++) {
     (function (type) {
-        app.directive(type + 'Chart', ['$http', 'theme', 'util', function ($http, theme, util) {
+        app.directive(type + 'Chart', ['$http', 'util', function ($http, util) {
             return {
                 restrict: 'EA',
-                template: '<div></div>',
+                template: '<div config="config" data="data"></div>',
                 scope: {
                     config: '=config',
                     data: '=data',
-                    chartObj: '=chartObj'
+                    chartObj: '=?chartObj'
                 },
-                link: getLinkFunction($http, theme, util, type)
+                link: getLinkFunction($http, util, type)
             };
         }]);
     })(types[i]);
