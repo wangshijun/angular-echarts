@@ -10,10 +10,7 @@ angular.module('angular-echarts.theme', []).factory('theme', ['infographic', 'ma
         macarons: macarons,
         shine: shine,
         dark: dark,
-        blue: blue,
-        green: green,
-        red: red,
-        grey: grey,
+        roma: roma,
     };
 
     return {
@@ -23,4 +20,3 @@ angular.module('angular-echarts.theme', []).factory('theme', ['infographic', 'ma
     };
 
 }]);
-

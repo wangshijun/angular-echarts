@@ -8,20 +8,27 @@ You will need the following things properly installed on your computer.
 
 * [Node.js](http://nodejs.org/) (with NPM) and [Bower](http://bower.io/)
 
+## Breaking Changes in V1
+
+* `echart` support is v3.4.0;
+* `angular` support is v1.6.2;
+* map chart requires additional work, see below;
+* custome themes are removed, all uses the build in ones;
+
 ## Building
 
-- Preparing  
+- Preparing
 `bower install` & `npm install`
 
-- default  
+- default
 `gulp`
 > develop with realtime monitor, automatic open browser to view example
 
-- build  
+- build
 `gulp build`
 > Build file to dist
 
-- publish  
+- publish
 `gulp publish`
 > Build & bump npm versions
 
@@ -36,9 +43,11 @@ $ bower install angular-echarts --save
 Inject echarts and angular-echarts file into page
 
 ```
-<script src="path/to/bower_components/echarts/build/dist/echarts-all.js"></script>
+<script src="path/to/bower_components/echarts/dist/echarts.js"></script>
 <script src="path/to/bower_components/angular-echarts/dist/angular-echarts.min.js"></script>
 ```
+
+*Download and inject map definitions if you want a map chart: http://echarts.baidu.com/download-map.html*
 
 Add dependency and declare a demo controller
 
@@ -115,3 +124,4 @@ Use this markup for a quick demo
 * open ```docs/index.html``` in browser
 
 > Or you can use `gulp server` and visit `http://localhost:8080` in Chrome browser, to avoid `XMLHttpRequest Cross origin requests` error.
+
