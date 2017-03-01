@@ -6,7 +6,7 @@
  * @param {Service} $http, http service to make ajax requests from angular
  * @param {String} type, chart type
  */
-function getLinkFunction($http, util, type) {
+function getLinkFunction($http, theme, util, type) {
     return function (scope, element, attrs) {
         scope.config = scope.config || {};
 
@@ -125,7 +125,7 @@ function getLinkFunction($http, util, type) {
             getSizes(scope.config);
 
             if (!chart) {
-                chart = echarts.init(ndWrapper);
+                chart = echarts.init(ndWrapper, scope.config.theme || 'shine');
             }
 
             if (scope.config.event) {
@@ -205,11 +205,11 @@ function getLinkFunction($http, util, type) {
 /**
  * add directives
  */
-var app = angular.module('angular-echarts', ['angular-echarts.util']);
+var app = angular.module('angular-echarts', ['angular-echarts.theme', 'angular-echarts.util']);
 var types = ['line', 'bar', 'area', 'pie', 'donut', 'gauge', 'map', 'radar'];
 for (var i = 0, n = types.length; i < n; i++) {
     (function (type) {
-        app.directive(type + 'Chart', ['$http', 'util', function ($http, util) {
+        app.directive(type + 'Chart', ['$http', 'theme', 'util', function ($http, theme, util) {
             return {
                 restrict: 'EA',
                 template: '<div config="config" data="data"></div>',
@@ -218,7 +218,7 @@ for (var i = 0, n = types.length; i < n; i++) {
                     data: '=data',
                     chartObj: '=?chartObj'
                 },
-                link: getLinkFunction($http, util, type)
+                link: getLinkFunction($http, theme, util, type)
             };
         }]);
     })(types[i]);
