@@ -44,8 +44,8 @@ function getLinkFunction($http, theme, util, type) {
                     tooltip: util.getTooltip(data, config, type),
                     legend: util.getLegend(data, config, type),
                     toolbox: angular.extend({ show: false }, angular.isObject(config.toolbox) ? config.toolbox : {}),
-                    xAxis: [ angular.extend(xAxis, util.getAxisTicks(data, config, type)) ],
-                    yAxis: [ yAxis ],
+                    xAxis: util.isHeatmapChart(type) ? config.xAxis : [ angular.extend(xAxis, util.getAxisTicks(data, config, type)) ],
+                    yAxis: util.isHeatmapChart(type) ? config.yAxis : [ yAxis ],
                     graphic: config.graphic && (angular.isObject(config.graphic) || angular.isArray(config.graphic)) ? config.graphic : [],
                     series: util.getSeries(data, config, type),
                     visualMap: config.visualMap ? config.visualMap : null
@@ -67,7 +67,7 @@ function getLinkFunction($http, theme, util, type) {
             if (!config.showLegend || type === 'gauge') {
                 delete options.legend;
             }
-            if (!util.isAxisChart(type)) {
+            if (!util.isAxisChart(type) && !util.isHeatmapChart(type)) {
                 delete options.xAxis;
                 delete options.yAxis;
             }
@@ -193,7 +193,7 @@ function getLinkFunction($http, theme, util, type) {
  * add directives
  */
 var app = angular.module('angular-echarts', ['angular-echarts.theme', 'angular-echarts.util']);
-var types = ['line', 'bar', 'area', 'pie', 'donut', 'gauge', 'map', 'radar'];
+var types = ['line', 'bar', 'area', 'pie', 'donut', 'gauge', 'map', 'radar', 'heatmap'];
 for (var i = 0, n = types.length; i < n; i++) {
     (function (type) {
         app.directive(type + 'Chart', ['$http', 'theme', 'util', function ($http, theme, util) {
@@ -223,6 +223,9 @@ angular.module('angular-echarts.util', []).factory('util', function () {
     }
     function isAxisChart(type) {
         return ['line', 'bar', 'area'].indexOf(type) > -1;
+    }
+    function isHeatmapChart(type) {
+        return ['heatmap'].indexOf(type) > -1;
     }
     /**
      * get x axis ticks from the 1st serie
@@ -397,6 +400,20 @@ angular.module('angular-echarts.util', []).factory('util', function () {
             if (type === 'radar') {
                 conf.data = serie.data;
             }
+            if (isHeatmapChart(type)) {
+                conf.type = 'heatmap';
+                conf.name = serie.name;
+                conf.data = serie.data;
+                conf = angular.extend(conf, {
+                    label: { normal: { show: true } },
+                    itemStyle: {
+                        emphasis: {
+                            shadowBlur: 10,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }, config.heatmap || {});
+            }
             series.push(conf);
         });
         return series;
@@ -487,6 +504,7 @@ angular.module('angular-echarts.util', []).factory('util', function () {
     return {
         isPieChart: isPieChart,
         isAxisChart: isAxisChart,
+        isHeatmapChart: isHeatmapChart,
         getAxisTicks: getAxisTicks,
         getSeries: getSeries,
         getLegend: getLegend,
