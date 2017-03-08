@@ -58,8 +58,8 @@ function getLinkFunction($http, theme, util, type) {
                 tooltip: util.getTooltip(data, config, type),
                 legend: util.getLegend(data, config, type),
                 toolbox: angular.extend({ show: false }, angular.isObject(config.toolbox) ? config.toolbox : {}),
-                xAxis: [ angular.extend(xAxis, util.getAxisTicks(data, config, type)) ],
-                yAxis: [ yAxis ],
+                xAxis: util.isHeatmapChart(type)? config.xAxis : [ angular.extend(xAxis, util.getAxisTicks(data, config, type)) ],
+                yAxis: util.isHeatmapChart(type)? config.yAxis :[ yAxis ],
                 graphic: config.graphic && (angular.isObject(config.graphic) || angular.isArray(config.graphic)) ? config.graphic : [],
                 series: util.getSeries(data, config, type),
                 visualMap: config.visualMap ? config.visualMap : null
@@ -85,7 +85,7 @@ function getLinkFunction($http, theme, util, type) {
                 delete options.legend;
             }
 
-            if (!util.isAxisChart(type)) {
+            if (!util.isAxisChart(type) && !util.isHeatmapChart(type)) {
                 delete options.xAxis;
                 delete options.yAxis;
             }
@@ -206,7 +206,7 @@ function getLinkFunction($http, theme, util, type) {
  * add directives
  */
 var app = angular.module('angular-echarts', ['angular-echarts.theme', 'angular-echarts.util']);
-var types = ['line', 'bar', 'area', 'pie', 'donut', 'gauge', 'map', 'radar'];
+var types = ['line', 'bar', 'area', 'pie', 'donut', 'gauge', 'map', 'radar', 'heatmap'];
 for (var i = 0, n = types.length; i < n; i++) {
     (function (type) {
         app.directive(type + 'Chart', ['$http', 'theme', 'util', function ($http, theme, util) {
