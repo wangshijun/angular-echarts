@@ -21,6 +21,9 @@ angular.module('angular-echarts.util', []).factory('util', function () {
         return ['heatmap'].indexOf(type) > -1;
     }
 
+    function isGauge2Chart(type) {
+        return ['gauge2'].indexOf(type) > -1;
+    }
     /**
      * get x axis ticks from the 1st serie
      */
@@ -216,7 +219,65 @@ angular.module('angular-echarts.util', []).factory('util', function () {
                 }
               }, config.heatmap || {});
             }
-
+            if (isGauge2Chart(type)) {
+                conf.type = 'gauge';
+                conf = angular.extend(conf, {
+                    min:0,
+                    max:10,
+                    radius:110,
+                    startAngle:200,
+                    endAngle:-20,
+                    splitNumber: 10,
+                    axisLine: {
+                        lineStyle: {
+                            color: [[(conf.data[0].value)/10, config.lineColor||'#228b22'], [1, '#a7a7a7']],
+                            width: 9
+                        }
+                    },
+                    axisTick: {
+                        show:false
+                    },
+                    axisLabel: {
+                        textStyle: {
+                            color: '#a7a7a7',
+                            fontSize: 20
+                        },
+                        formatter:function(v){
+                            switch (v + '') {
+                                case '0' : return '1';
+                                case '10' : return '10';
+                            }
+                        }
+                    },
+                    splitLine: {
+                        length :9,
+                        lineStyle: {
+                            width:2,
+                            color: '#fff',
+                            type:'solid'
+                        }
+                    },
+                    pointer: {
+                        width: 0
+                    }
+                }, config.gauge || {});
+                if(config.display_icon) conf.detail = {
+                    formatter:function(v){
+                        return '';
+                    }
+                };
+                else conf.detail = {
+                    offsetCenter: [0, '-20%'],
+                    textStyle: {
+                        fontSize: 55,
+                        color: '#979797'
+                    },
+                    formatter:function(v){
+                        if(v <= 0) v ='N/A';
+                        return v;
+                    }
+                };
+            }
             series.push(conf);
         });
 
@@ -310,6 +371,7 @@ angular.module('angular-echarts.util', []).factory('util', function () {
         isPieChart: isPieChart,
         isAxisChart: isAxisChart,
         isHeatmapChart: isHeatmapChart,
+        isGauge2Chart: isGauge2Chart,
         getAxisTicks: getAxisTicks,
         getSeries: getSeries,
         getLegend: getLegend,
