@@ -33,6 +33,8 @@
         ]
     };
     var gauge2Config = {
+        //width:200,
+        height:150,
         display_icon: false,
         lineColor: "#C11B17",
         imgSrc: "http://svgshare.com/i/11B.svg"

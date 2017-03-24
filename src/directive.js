@@ -19,9 +19,10 @@ function getLinkFunction($http, theme, util, type) {
         function getSizes(config) {
             width = config.width || parseInt(attrs.width) || parentWidth || 320;
             height = config.height || parseInt(attrs.height) || parentHeight || 240;
-
             ndWrapper.style.width = width + 'px';
             ndWrapper.style.height = height + 'px';
+            config.width = width;
+            config.height = height;
         }
 
         function getOptions(data, config, type) {
@@ -192,11 +193,12 @@ function getLinkFunction($http, theme, util, type) {
                 var imgEle = element.find('img')[0];
                 if(!imgEle) {
                     imgEle = new Image();
-                    imgEle.style.width = '80px';
-                    imgEle.style.height = '80px';
+                    var responsiveWidth = 80*(scope.config.width < scope.config.height? scope.config.width:scope.config.height)/240;
+                    imgEle.style.width = responsiveWidth +'px';
+                    imgEle.style.height = responsiveWidth +'px';
                     imgEle.style.position = 'absolute';
-                    imgEle.style.top = 'calc(50% - 40px)';
-                    imgEle.style.left = 'calc(50% - 40px)';
+                    imgEle.style.top = 'calc(50% - '+(responsiveWidth/2)+'px)';
+                    imgEle.style.left = 'calc(50% - '+(responsiveWidth/2)+'px)';
                     element.find('div')[0].append(imgEle);
                 }
                 if(options.display_icon){

@@ -224,7 +224,6 @@ angular.module('angular-echarts.util', []).factory('util', function () {
                 conf = angular.extend(conf, {
                     min:0,
                     max:10,
-                    radius:110,
                     startAngle:200,
                     endAngle:-20,
                     splitNumber: 10,
@@ -240,7 +239,7 @@ angular.module('angular-echarts.util', []).factory('util', function () {
                     axisLabel: {
                         textStyle: {
                             color: '#a7a7a7',
-                            fontSize: 20
+                            fontSize: 20*(config.width < config.height? config.width:config.height)/240
                         },
                         formatter:function(v){
                             switch (v + '') {
@@ -269,7 +268,7 @@ angular.module('angular-echarts.util', []).factory('util', function () {
                 else conf.detail = {
                     offsetCenter: [0, '-20%'],
                     textStyle: {
-                        fontSize: 55,
+                        fontSize: 55*(config.width < config.height? config.width:config.height)/240,
                         color: '#979797'
                     },
                     formatter:function(v){
