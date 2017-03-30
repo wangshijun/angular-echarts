@@ -4,7 +4,27 @@
     var pageload = {
         name: 'page.load',
         datapoints: [
-            { x: 2001, y: 1012 },
+            { x: 'zhouyi', y: 1012 },
+            { x: 2002, y: 1023 },
+            { x: 2003, y: 1045 },
+            { x: 2004, y: 1062 },
+            { x: 2005, y: 1032 },
+            { x: 2006, y: 1040 },
+            { x: 2007, y: 1023 },
+            { x: 2008, y: 1090 },
+            { x: 2009, y: 1012 },
+            { x: 2010, y: 1012 },
+            { x: 'zhouyi', y: 1012 },
+            { x: 2002, y: 1023 },
+            { x: 2003, y: 1045 },
+            { x: 2004, y: 1062 },
+            { x: 2005, y: 1032 },
+            { x: 2006, y: 1040 },
+            { x: 2007, y: 1023 },
+            { x: 2008, y: 1090 },
+            { x: 2009, y: 1012 },
+            { x: 2010, y: 1012 },
+            { x: 'zhouyi', y: 1012 },
             { x: 2002, y: 1023 },
             { x: 2003, y: 1045 },
             { x: 2004, y: 1062 },
@@ -30,7 +50,11 @@
             { x: 2008, y: 80 },
             { x: 2009, y: 20 },
             { x: 2010, y: 25 }
-        ]
+        ],
+        seriesOptions: {
+          // other options
+          // https://ecomfe.github.io/echarts-doc/public/en/option.html#series
+        }
     };
 
     function updateData($interval) {
@@ -86,8 +110,28 @@
             debug: true,
             stack: true
         };
+        var series = angular.copy(pageload);
+        // custom style, https://ecomfe.github.io/echarts-examples/public/editor.html?c=area-simple
+        series.seriesOptions = angular.extend(series.seriesOptions || {}, {
+          itemStyle: {
+                normal: {
+                    color: 'rgb(255, 70, 131)'
+                }
+            },
+          areaStyle: {
+                normal: {
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                        offset: 0,
+                        color: 'rgb(255, 158, 68)'
+                    }, {
+                        offset: 1,
+                        color: 'rgb(255, 70, 131)'
+                    }])
+                }
+            }
+        });
 
-        $scope.data = [ pageload ];
+        $scope.data = [ series ];
         $scope.multiple = [pageload, firstPaint ];
 
     });
@@ -371,4 +415,3 @@
     });
 
 })();
-

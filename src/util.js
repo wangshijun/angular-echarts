@@ -216,7 +216,8 @@ angular.module('angular-echarts.util', []).factory('util', function () {
                 }
               }, config.heatmap || {});
             }
-
+            
+            conf = angular.extend(conf, serie.seriesOptions || {});
             series.push(conf);
         });
 
