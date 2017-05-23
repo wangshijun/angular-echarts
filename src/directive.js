@@ -9,7 +9,6 @@
 function getLinkFunction($http, theme, util, type) {
     return function (scope, element, attrs) {
         scope.config = scope.config || {};
-
         var ndWrapper  = element.find('div')[0],
             ndParent = element.parent()[0],
             parentWidth = ndParent.clientWidth,
@@ -20,9 +19,10 @@ function getLinkFunction($http, theme, util, type) {
         function getSizes(config) {
             width = config.width || parseInt(attrs.width) || parentWidth || 320;
             height = config.height || parseInt(attrs.height) || parentHeight || 240;
-
             ndWrapper.style.width = width + 'px';
             ndWrapper.style.height = height + 'px';
+            config.width = width;
+            config.height = height;
         }
 
         function getOptions(data, config, type) {
@@ -81,7 +81,7 @@ function getLinkFunction($http, theme, util, type) {
                 });
             }
 
-            if (!config.showLegend || type === 'gauge') {
+            if (!config.showLegend || type === 'gauge' || type === 'gauge2') {
                 delete options.legend;
             }
 
@@ -108,7 +108,9 @@ function getLinkFunction($http, theme, util, type) {
             if (config.grid) {
                 options.grid = config.grid;
             }
-
+            if (config.display_icon) {
+                options.display_icon = config.imgSrc;
+            }
             return options;
         }
 
@@ -187,6 +189,25 @@ function getLinkFunction($http, theme, util, type) {
                     chart.showLoading({ text: scope.config.errorMsg || '没有数据', textStyle: textStyle });
                 }
             }
+            if(type == 'gauge2') {
+                var imgEle = element.find('img')[0];
+                if(!imgEle) {
+                    imgEle = new Image();
+                    var responsiveWidth = 80*(scope.config.width < scope.config.height? scope.config.width:scope.config.height)/240;
+                    imgEle.style.width = responsiveWidth +'px';
+                    imgEle.style.height = responsiveWidth +'px';
+                    imgEle.style.position = 'absolute';
+                    imgEle.style.top = 'calc(50% - '+(responsiveWidth/2)+'px)';
+                    imgEle.style.left = 'calc(50% - '+(responsiveWidth/2)+'px)';
+                    element.find('div')[0].append(imgEle);
+                }
+                if(options.display_icon){
+                    imgEle.style.display = 'block';
+                    imgEle.setAttribute('src', options.display_icon);
+                } else {
+                    imgEle.style.display = 'none';
+                }
+            }
             scope.chartObj = chart;
         }
 
@@ -198,7 +219,6 @@ function getLinkFunction($http, theme, util, type) {
         scope.$watch(function () { return scope.data; }, function (value) {
             if (value) { setOptions(); }
         }, true);
-
     };
 }
 
@@ -206,7 +226,7 @@ function getLinkFunction($http, theme, util, type) {
  * add directives
  */
 var app = angular.module('angular-echarts', ['angular-echarts.theme', 'angular-echarts.util']);
-var types = ['line', 'bar', 'area', 'pie', 'donut', 'gauge', 'map', 'radar', 'heatmap'];
+var types = ['line', 'bar', 'area', 'pie', 'donut', 'gauge', 'map', 'radar', 'heatmap', 'gauge2'];
 for (var i = 0, n = types.length; i < n; i++) {
     (function (type) {
         app.directive(type + 'Chart', ['$http', 'theme', 'util', function ($http, theme, util) {
@@ -223,4 +243,3 @@ for (var i = 0, n = types.length; i < n; i++) {
         }]);
     })(types[i]);
 }
-

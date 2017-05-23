@@ -56,13 +56,33 @@
           // https://ecomfe.github.io/echarts-doc/public/en/option.html#series
         }
     };
-
+    var gauge2Config = {
+        //width:200,
+        height:150,
+        display_icon: false,
+        lineColor: "#C11B17",
+        imgSrc: "http://svgshare.com/i/11B.svg"
+    };
+    var gauge2Load = {
+        name: 'gauge2 data',
+        datapoints: [
+            { x: '', y: 3.3 }
+        ]
+    }
+    function dummyRandomUpdateGauge2Chart(){
+        var number = Math.random() * 10;
+        gauge2Load.datapoints[0].y = number < 2 ? 0 : (Math.round(number * 100) / 100);
+        gauge2Config.lineColor = number < 4 ? "#C11B17" : number < 6 ? "#FDD017" : "#00FF7F";
+        gauge2Config.imgSrc = "http://svgshare.com/i/11B.svg";
+        gauge2Config.display_icon =  number > 8 ? true : false;
+    }
     function updateData($interval) {
         $interval(function () {
             pageload.datapoints.push({ x: pageload.datapoints[pageload.datapoints.length - 1].x + 1, y: Math.round(Math.random() * 2000) });
             firstPaint.datapoints.push({ x: firstPaint.datapoints[firstPaint.datapoints.length - 1].x + 1, y: Math.round(Math.random() * 100) });
             pageload.datapoints.shift();
             firstPaint.datapoints.shift();
+            dummyRandomUpdateGauge2Chart();
         }, 3000);
     }
 
@@ -398,6 +418,12 @@
         },
       };
 
+    });
+    app.controller('Gauge2ChartController', function ($scope, $interval) {
+      $scope.data = [gauge2Load];
+      $scope.config = gauge2Config;
+      $scope.imgSrc = "http://svgshare.com/i/11B.svg";
+      console.log($scope);
     });
 
     app.controller('AjaxChartController', function ($scope, $interval) {
