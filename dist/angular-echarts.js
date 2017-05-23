@@ -15,6 +15,8 @@ function getLinkFunction($http, theme, util, type) {
             height = config.height || parseInt(attrs.height) || parentHeight || 240;
             ndWrapper.style.width = width + 'px';
             ndWrapper.style.height = height + 'px';
+            config.width = width;
+            config.height = height;
         }
         function getOptions(data, config, type) {
             // merge default config
@@ -64,7 +66,7 @@ function getLinkFunction($http, theme, util, type) {
                     axis.axisTick = { show: false };
                 });
             }
-            if (!config.showLegend || type === 'gauge') {
+            if (!config.showLegend || type === 'gauge' || type === 'gauge2') {
                 delete options.legend;
             }
             if (!util.isAxisChart(type) && !util.isHeatmapChart(type)) {
@@ -85,6 +87,9 @@ function getLinkFunction($http, theme, util, type) {
             }
             if (config.grid) {
                 options.grid = config.grid;
+            }
+            if (config.display_icon) {
+                options.display_icon = config.imgSrc;
             }
             return options;
         }
@@ -170,6 +175,25 @@ function getLinkFunction($http, theme, util, type) {
                     });
                 }
             }
+            if (type == 'gauge2') {
+                var imgEle = element.find('img')[0];
+                if (!imgEle) {
+                    imgEle = new Image();
+                    var responsiveWidth = 80 * (scope.config.width < scope.config.height ? scope.config.width : scope.config.height) / 240;
+                    imgEle.style.width = responsiveWidth + 'px';
+                    imgEle.style.height = responsiveWidth + 'px';
+                    imgEle.style.position = 'absolute';
+                    imgEle.style.top = 'calc(50% - ' + responsiveWidth / 2 + 'px)';
+                    imgEle.style.left = 'calc(50% - ' + responsiveWidth / 2 + 'px)';
+                    element.find('div')[0].append(imgEle);
+                }
+                if (options.display_icon) {
+                    imgEle.style.display = 'block';
+                    imgEle.setAttribute('src', options.display_icon);
+                } else {
+                    imgEle.style.display = 'none';
+                }
+            }
             scope.chartObj = chart;
         }
         // update when charts config changes
@@ -193,7 +217,7 @@ function getLinkFunction($http, theme, util, type) {
  * add directives
  */
 var app = angular.module('angular-echarts', ['angular-echarts.theme', 'angular-echarts.util']);
-var types = ['line', 'bar', 'area', 'pie', 'donut', 'gauge', 'map', 'radar', 'heatmap'];
+var types = ['line', 'bar', 'area', 'pie', 'donut', 'gauge', 'map', 'radar', 'heatmap', 'gauge2'];
 for (var i = 0, n = types.length; i < n; i++) {
     (function (type) {
         app.directive(type + 'Chart', ['$http', 'theme', 'util', function ($http, theme, util) {
@@ -226,6 +250,9 @@ angular.module('angular-echarts.util', []).factory('util', function () {
     }
     function isHeatmapChart(type) {
         return ['heatmap'].indexOf(type) > -1;
+    }
+    function isGauge2Chart(type) {
+        return ['gauge2'].indexOf(type) > -1;
     }
     /**
      * get x axis ticks from the 1st serie
@@ -414,6 +441,66 @@ angular.module('angular-echarts.util', []).factory('util', function () {
                     }
                 }, config.heatmap || {});
             }
+            if (isGauge2Chart(type)) {
+                conf.type = 'gauge';
+                conf = angular.extend(conf, {
+                    min: 0,
+                    max: 10,
+                    startAngle: 200,
+                    endAngle: -20,
+                    splitNumber: 10,
+                    axisLine: {
+                        lineStyle: {
+                            color: [[(conf.data[0].value)/10, config.lineColor||'#228b22'], [1, '#a7a7a7']],
+                            width: 9
+                        }
+                    },
+                    axisTick: { show: false },
+                    axisLabel: {
+                        textStyle: {
+                            color: '#a7a7a7',
+                            fontSize: 20 * (config.width < config.height ? config.width : config.height) / 240
+                        },
+                        formatter: function (v) {
+                            switch (v + '') {
+                            case '0':
+                                return '1';
+                            case '10':
+                                return '10';
+                            }
+                        }
+                    },
+                    splitLine: {
+                        length: 9,
+                        lineStyle: {
+                            width: 2,
+                            color: '#fff',
+                            type: 'solid'
+                        }
+                    },
+                    pointer: { width: 0 }
+                }, config.gauge || {});
+                if (config.display_icon)
+                    conf.detail = {
+                        formatter: function (v) {
+                            return '';
+                        }
+                    };
+                else
+                    conf.detail = {
+                        offsetCenter: [0, '-20%'],
+                        textStyle: {
+                            fontSize: 55 * (config.width < config.height ? config.width : config.height) / 240,
+                            color: '#979797'
+                        },
+                        formatter: function (v) {
+                            if (v <= 0)
+                                v = 'N/A';
+                            return v;
+                        }
+                    };
+            }
+            conf = angular.extend(conf, serie.seriesOptions || {});
             series.push(conf);
         });
         return series;
@@ -505,6 +592,7 @@ angular.module('angular-echarts.util', []).factory('util', function () {
         isPieChart: isPieChart,
         isAxisChart: isAxisChart,
         isHeatmapChart: isHeatmapChart,
+        isGauge2Chart: isGauge2Chart,
         getAxisTicks: getAxisTicks,
         getSeries: getSeries,
         getLegend: getLegend,
