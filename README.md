@@ -112,6 +112,43 @@ Use this markup for a quick demo
 </div>
 ```
 
+Define custom style with `seriesOptions` https://ecomfe.github.io/echarts-doc/public/en/option.html#series
+
+```javascript
+        $scope.config = {
+            title: 'Area Chart',
+            subtitle: 'Area Chart Subtitle',
+            yAxis: { scale: true },
+            debug: true,
+            stack: true
+        };
+        var series = angular.copy(pageload);
+        // custom style, https://ecomfe.github.io/echarts-examples/public/editor.html?c=area-simple
+        series.seriesOptions = angular.extend(series.seriesOptions || {}, {
+          itemStyle: {
+                normal: {
+                    color: 'rgb(255, 70, 131)'
+                }
+            },
+          areaStyle: {
+                normal: {
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                        offset: 0,
+                        color: 'rgb(255, 158, 68)'
+                    }, {
+                        offset: 1,
+                        color: 'rgb(255, 70, 131)'
+                    }])
+                }
+            }
+        });
+
+        $scope.data = [ series ];
+        $scope.multiple = [pageload, firstPaint ];
+```
+
+
+
 ## Contribute
 
 * `git clone git@github.com:wangshijun/angular-echarts.git`

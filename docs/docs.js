@@ -4,7 +4,27 @@
     var pageload = {
         name: 'page.load',
         datapoints: [
-            { x: 2001, y: 1012 },
+            { x: 'zhouyi', y: 1012 },
+            { x: 2002, y: 1023 },
+            { x: 2003, y: 1045 },
+            { x: 2004, y: 1062 },
+            { x: 2005, y: 1032 },
+            { x: 2006, y: 1040 },
+            { x: 2007, y: 1023 },
+            { x: 2008, y: 1090 },
+            { x: 2009, y: 1012 },
+            { x: 2010, y: 1012 },
+            { x: 'zhouyi', y: 1012 },
+            { x: 2002, y: 1023 },
+            { x: 2003, y: 1045 },
+            { x: 2004, y: 1062 },
+            { x: 2005, y: 1032 },
+            { x: 2006, y: 1040 },
+            { x: 2007, y: 1023 },
+            { x: 2008, y: 1090 },
+            { x: 2009, y: 1012 },
+            { x: 2010, y: 1012 },
+            { x: 'zhouyi', y: 1012 },
             { x: 2002, y: 1023 },
             { x: 2003, y: 1045 },
             { x: 2004, y: 1062 },
@@ -30,15 +50,39 @@
             { x: 2008, y: 80 },
             { x: 2009, y: 20 },
             { x: 2010, y: 25 }
-        ]
+        ],
+        seriesOptions: {
+          // other options
+          // https://ecomfe.github.io/echarts-doc/public/en/option.html#series
+        }
     };
-
+    var gauge2Config = {
+        //width:200,
+        height:150,
+        display_icon: false,
+        lineColor: "#C11B17",
+        imgSrc: "http://svgshare.com/i/11B.svg"
+    };
+    var gauge2Load = {
+        name: 'gauge2 data',
+        datapoints: [
+            { x: '', y: 3.3 }
+        ]
+    }
+    function dummyRandomUpdateGauge2Chart(){
+        var number = Math.random() * 10;
+        gauge2Load.datapoints[0].y = number < 2 ? 0 : (Math.round(number * 100) / 100);
+        gauge2Config.lineColor = number < 4 ? "#C11B17" : number < 6 ? "#FDD017" : "#00FF7F";
+        gauge2Config.imgSrc = "http://svgshare.com/i/11B.svg";
+        gauge2Config.display_icon =  number > 8 ? true : false;
+    }
     function updateData($interval) {
         $interval(function () {
             pageload.datapoints.push({ x: pageload.datapoints[pageload.datapoints.length - 1].x + 1, y: Math.round(Math.random() * 2000) });
             firstPaint.datapoints.push({ x: firstPaint.datapoints[firstPaint.datapoints.length - 1].x + 1, y: Math.round(Math.random() * 100) });
             pageload.datapoints.shift();
             firstPaint.datapoints.shift();
+            dummyRandomUpdateGauge2Chart();
         }, 3000);
     }
 
@@ -86,8 +130,28 @@
             debug: true,
             stack: true
         };
+        var series = angular.copy(pageload);
+        // custom style, https://ecomfe.github.io/echarts-examples/public/editor.html?c=area-simple
+        series.seriesOptions = angular.extend(series.seriesOptions || {}, {
+          itemStyle: {
+                normal: {
+                    color: 'rgb(255, 70, 131)'
+                }
+            },
+          areaStyle: {
+                normal: {
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                        offset: 0,
+                        color: 'rgb(255, 158, 68)'
+                    }, {
+                        offset: 1,
+                        color: 'rgb(255, 70, 131)'
+                    }])
+                }
+            }
+        });
 
-        $scope.data = [ pageload ];
+        $scope.data = [ series ];
         $scope.multiple = [pageload, firstPaint ];
 
     });
@@ -355,6 +419,12 @@
       };
 
     });
+    app.controller('Gauge2ChartController', function ($scope, $interval) {
+      $scope.data = [gauge2Load];
+      $scope.config = gauge2Config;
+      $scope.imgSrc = "http://svgshare.com/i/11B.svg";
+      console.log($scope);
+    });
 
     app.controller('AjaxChartController', function ($scope, $interval) {
 
@@ -371,4 +441,3 @@
     });
 
 })();
-
