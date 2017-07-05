@@ -58,7 +58,7 @@ function getLinkFunction($http, theme, util, type) {
                 tooltip: util.getTooltip(data, config, type),
                 legend: util.getLegend(data, config, type),
                 toolbox: angular.extend({ show: false }, angular.isObject(config.toolbox) ? config.toolbox : {}),
-                xAxis: util.isHeatmapChart(type)? config.xAxis : [ angular.extend(xAxis, util.getAxisTicks(data, config, type)) ],
+                xAxis: util.isHeatmapChart(type)? config.xAxis : [ angular.extend(util.getAxisTicks(data, config, type), xAxis) ],
                 yAxis: util.isHeatmapChart(type)? config.yAxis :[ yAxis ],
                 graphic: config.graphic && (angular.isObject(config.graphic) || angular.isArray(config.graphic)) ? config.graphic : [],
                 series: util.getSeries(data, config, type),
