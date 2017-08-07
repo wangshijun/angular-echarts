@@ -136,7 +136,7 @@ Use this markup for a quick demo
 
 ## Implementations
 
-### Simple Bar Chart (simple-bar-chart)
+### [Simple Bar Chart (simple-bar-chart)](https://ecomfe.github.io/echarts-examples/public/editor.html?c=bar-tick-align)
 ```js
 {
     color: ['#3398DB', '#C8B1EF', '#263238', '#960F1E', '#06C947'],
@@ -224,7 +224,7 @@ Use this markup for a quick demo
 };
 ```
 
-## Inverted Simple Bar Chart (simple-bar-chart)
+## [Inverted Simple Bar Chart (simple-bar-chart)](https://ecomfe.github.io/echarts-examples/public/editor.html?c=bar-tick-align)
 ```js
 {
     color: ['#3398DB', '#C8B1EF', '#263238', '#960F1E', '#06C947'],
