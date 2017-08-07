@@ -44,11 +44,14 @@ function getLinkFunction($http, theme, util, type) {
                     tooltip: util.getTooltip(data, config, type),
                     legend: util.getLegend(data, config, type),
                     toolbox: angular.extend({ show: false }, angular.isObject(config.toolbox) ? config.toolbox : {}),
-                    xAxis: util.isHeatmapChart(type) ? config.xAxis : [ angular.extend(xAxis, util.getAxisTicks(data, config, type)) ],
-                    yAxis: util.isHeatmapChart(type) ? config.yAxis : [ yAxis ],
+                    xAxis: util.isHeatmapChart(type) ? config.xAxis : [angular.extend(xAxis, util.getAxisTicks(data, config, type))],
+                    yAxis: util.isHeatmapChart(type) ? config.yAxis : [yAxis],
                     graphic: config.graphic && (angular.isObject(config.graphic) || angular.isArray(config.graphic)) ? config.graphic : [],
                     series: util.getSeries(data, config, type),
-                    visualMap: config.visualMap ? config.visualMap : null
+                    visualMap: config.visualMap ? config.visualMap : null,
+                    //support global font style for the chart
+                    //see https://ecomfe.github.io/echarts-doc/public/en/option.html#textStyle
+                    textStyle: config.textStyle ? config.textStyle : undefined
                 };
             if (!config.showXAxis) {
                 angular.forEach(options.xAxis, function (axis) {
@@ -196,13 +199,14 @@ var app = angular.module('angular-echarts', ['angular-echarts.theme', 'angular-e
 var types = ['line', 'bar', 'area', 'pie', 'donut', 'gauge', 'map', 'radar', 'heatmap'];
 for (var i = 0, n = types.length; i < n; i++) {
     (function (type) {
-        app.directive(type + 'Chart', ['$http', 'theme', 'util', function ($http, theme, util) {
+        app.directive(type + 'Chart', ['$http', 'theme', 'util', function($http, theme, util) {
                     return {
                         restrict: 'EA',
                         template: '<div config="config" data="data"></div>',
                         scope: {
                             config: '=config',
                             data: '=data',
+                            textStyle: '=textStyle',
                             chartObj: '=?chartObj'
                         },
                         link: getLinkFunction($http, theme, util, type)

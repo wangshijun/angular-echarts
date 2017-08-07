@@ -125,3 +125,6 @@ Use this markup for a quick demo
 
 > Or you can use `gulp server` and visit `http://localhost:8080` in Chrome browser, to avoid `XMLHttpRequest Cross origin requests` error.
 
+
+## TODO
+- [ ] Add chart provider with global configurations
