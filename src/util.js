@@ -55,14 +55,11 @@ angular.module('angular-echarts.util', []).factory('util', function () {
                 datapoints.push(datapoint.y);
             });
 
-            //extend serie with custom configs
-            //see https://ecomfe.github.io/echarts-examples/public/editor.html?c=bar-tick-align
-            var conf = angular.extend({
+            var conf = {
                 type: type || 'line',
                 name: serie.name,
                 data: datapoints,
-            }, serie);
-            console.log(conf);
+            };
 
             // area chart is actually line chart with special itemStyle
             if (type === 'area') {

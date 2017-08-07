@@ -61,7 +61,7 @@ function getLinkFunction($http, theme, util, type) {
                 xAxis: util.isHeatmapChart(type) ? config.xAxis : [angular.extend(xAxis, util.getAxisTicks(data, config, type))],
                 yAxis: util.isHeatmapChart(type) ? config.yAxis : [yAxis],
                 graphic: config.graphic && (angular.isObject(config.graphic) || angular.isArray(config.graphic)) ? config.graphic : [],
-                series: util.getSeries(data, config, type),
+                series: config.series ? config.series : util.getSeries(data, config, type),
                 visualMap: config.visualMap ? config.visualMap : null,
                 //support global font style for the chart
                 //see https://ecomfe.github.io/echarts-doc/public/en/option.html#textStyle

@@ -15,6 +15,7 @@
     <script src="vendor/angular/angular.min.js"></script>
     <!-- <script src="../dist/angular&#45;echarts.min.js"></script> -->
     <script src="src/directive.js"></script>
+    <script src="src/echart.js"></script>
     <script src="src/util.js"></script>
     <script src="src/theme.js"></script>
     <script src="src/theme/infographic.js"></script>
@@ -44,10 +45,14 @@
         <bar-chart config="config" data="multiple"></bar-chart>
     </div>
 
-    <h3 class="page-header">Multi Bar Chart - With Options</h3>
-    <div ng-controller="MultiBarChartController">
-        <bar-chart config="config" data="data"></bar-chart>
-        <bar-chart config="config" data="multiple"></bar-chart>
+    <h3 class="page-header">Echart - (using echart directive)</h3>
+    <div>
+        <div ng-controller="SimpleBarChartController">
+            <echart config="config" options="options"></echart>
+        </div>
+        <div ng-controller="SimpleInvertedBarChartController">
+            <echart config="config" options="options"></echart>
+        </div>
     </div>
 
     <h3 class="page-header">Area Chart</h3>

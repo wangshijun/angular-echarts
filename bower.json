@@ -25,8 +25,8 @@
     "tests"
   ],
   "dependencies": {
-    "angular": "~1.6",
-    "echarts": "~3.4"
+    "angular": "^1.6.5",
+    "echarts": "^3.6.2"
   },
   "devDependencies": {
     "bootstrap": "~3"

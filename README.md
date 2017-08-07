@@ -130,6 +130,7 @@ Use this markup for a quick demo
 - [ ] Add chart provider with global configurations
 - [ ] Add support to the remaining charts i.e tree, treemap etc
 - [ ] Create chart widget with bootstrap style i.e panel
+- [ ] Add npm support
 
 ## References
 - [https://ecomfe.github.io/echarts-doc/public/en/tutorial.html#Customerized%20Chart%20Styles](https://ecomfe.github.io/echarts-doc/public/en/tutorial.html#Customerized%20Chart%20Styles)

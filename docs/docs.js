@@ -33,40 +33,6 @@
         ]
     };
 
-    var firstMultiBar = {
-        name: 'first',
-        type: 'bar',
-        datapoints: [
-            { x: 2001, y: 22 },
-            { x: 2002, y: 13 },
-            { x: 2003, y: 35 },
-            { x: 2004, y: 52 },
-            { x: 2005, y: 32 },
-            { x: 2006, y: 40 },
-            { x: 2007, y: 63 },
-            { x: 2008, y: 80 },
-            { x: 2009, y: 20 },
-            { x: 2010, y: 25 }
-        ]
-    };
-
-    var secondMultiBar = {
-        name: 'second',
-        type: 'bar',
-        datapoints: [
-            { x: 2001, y: 22 },
-            { x: 2002, y: 13 },
-            { x: 2003, y: 35 },
-            { x: 2004, y: 52 },
-            { x: 2005, y: 32 },
-            { x: 2006, y: 40 },
-            { x: 2007, y: 63 },
-            { x: 2008, y: 80 },
-            { x: 2009, y: 20 },
-            { x: 2010, y: 25 }
-        ]
-    };
-
 
     function updateData($interval) {
         $interval(function() {
@@ -115,20 +81,187 @@
 
     });
 
-    //multi bar chart with support for additional options
-    //see https://ecomfe.github.io/echarts-examples/public/editor.html?c=bar1
-    //see https://ecomfe.github.io/echarts-examples/public/editor.html?c=bar-y-category
-    app.controller('MultiBarChartController', function($scope) {
+    //simple bar chart with support for additional options
+    app.controller('SimpleBarChartController', function($scope) {
 
-        $scope.config = {
-            title: 'Multi Bar Chart',
-            subtitle: 'Multi Bar Chart Subtitle',
-            debug: true,
-            stack: false
+        $scope.options = {
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'shadow'
+                }
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis: [{
+                type: 'category',
+                data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+                axisTick: {
+                    alignWithLabel: true
+                }
+            }],
+            yAxis: [{
+                type: 'value'
+            }],
+            legend: {
+                orient: 'horizontal',
+                x: 'center',
+                y: 'top',
+                data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri']
+            },
+            series: [{
+                type: 'bar',
+                barWidth: '20%',
+                markPoint: {
+                    data: [
+                        { name: 'Maximum', type: 'max' },
+                        { name: 'Minimum', type: 'min' }
+                    ]
+                },
+                markLine: {
+                    data: [
+                        { type: 'average', name: 'Average' }
+                    ]
+                },
+                data: [{
+                        name: '',
+                        value: 10,
+                        itemStyle: {
+                            normal: {
+                                color: '#3398DB'
+                            }
+                        }
+                    },
+                    {
+                        name: '',
+                        value: 52,
+                        itemStyle: {
+                            normal: {
+                                color: '#960F1E'
+                            }
+                        }
+
+                    },
+                    {
+                        name: '',
+                        value: 200,
+                        itemStyle: {
+                            normal: {
+                                color: '#263238'
+                            }
+                        }
+                    },
+                    {
+                        name: '',
+                        value: 334,
+                        itemStyle: {
+                            normal: {
+                                color: '#06C947'
+                            }
+                        }
+                    },
+                    {
+                        name: '',
+                        value: 39,
+                        itemStyle: {
+                            normal: {
+                                color: '#C8B1EF'
+                            }
+                        }
+                    }
+                ]
+            }]
         };
 
-        $scope.data = [firstMultiBar];
-        $scope.multiple = [firstMultiBar, secondMultiBar];
+    });
+
+    //simple inverted bar chart with support for additional options
+    app.controller('SimpleInvertedBarChartController', function($scope) {
+
+        $scope.options = {
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'shadow'
+                }
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            yAxis: [{
+                type: 'category',
+                data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+                axisTick: {
+                    alignWithLabel: true
+                }
+            }],
+            xAxis: [{
+                type: 'value'
+            }],
+            legend: {
+                orient: 'vertial',
+                x: 'left',
+                data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri']
+            },
+            series: [{
+                type: 'bar',
+                barWidth: '20%',
+                data: [{
+                        name: 'Mon',
+                        value: 10,
+                        itemStyle: {
+                            normal: {
+                                color: '#3398DB'
+                            }
+                        }
+                    },
+                    {
+                        name: 'Tue',
+                        value: 52,
+                        itemStyle: {
+                            normal: {
+                                color: '#960F1E'
+                            }
+                        }
+
+                    },
+                    {
+                        name: 'Wed',
+                        value: 200,
+                        itemStyle: {
+                            normal: {
+                                color: '#263238'
+                            }
+                        }
+                    },
+                    {
+                        name: 'Thu',
+                        value: 334,
+                        itemStyle: {
+                            normal: {
+                                color: '#06C947'
+                            }
+                        }
+                    },
+                    {
+                        name: 'Fri',
+                        value: 39,
+                        itemStyle: {
+                            normal: {
+                                color: '#C8B1EF'
+                            }
+                        }
+                    }
+                ]
+            }]
+        };
 
     });
 
