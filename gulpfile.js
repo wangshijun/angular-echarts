@@ -49,7 +49,7 @@ gulp.task('build', function() {
 
     // build js
     gulp.src([
-            'src/directive.js', 'src/echart',
+            'src/directive.js', 'src/echart.js',
             'src/util.js', 'src/theme.js', 'src/theme/*.js'
         ]).pipe(plugins.removeUseStrict())
         .pipe(plugins.concat('angular-echarts.js'))
