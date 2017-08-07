@@ -128,3 +128,5 @@ Use this markup for a quick demo
 
 ## TODO
 - [ ] Add chart provider with global configurations
+- [ ] Add support to the remaining charts i.e tree, treemap etc
+- [ ] Create chart widget with bootstrap style i.e panel

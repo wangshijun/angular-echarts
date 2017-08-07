@@ -219,7 +219,6 @@ for (var i = 0, n = types.length; i < n; i++) {
                 scope: {
                     config: '=config',
                     data: '=data',
-                    textStyle: '=textStyle',
                     chartObj: '=?chartObj'
                 },
                 link: getLinkFunction($http, theme, util, type)
