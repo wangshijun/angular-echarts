@@ -7,10 +7,10 @@
  * @param {String} type, chart type
  */
 function getLinkFunction($http, theme, util, type) {
-    return function (scope, element, attrs) {
+    return function(scope, element, attrs) {
         scope.config = scope.config || {};
 
-        var ndWrapper  = element.find('div')[0],
+        var ndWrapper = element.find('div')[0],
             ndParent = element.parent()[0],
             parentWidth = ndParent.clientWidth,
             parentHeight = ndParent.clientHeight,
@@ -46,7 +46,7 @@ function getLinkFunction($http, theme, util, type) {
                     show: false
                 },
                 axisLabel: {
-                    formatter: function (v) {
+                    formatter: function(v) {
                         return util.formatKMBT(v);
                     }
                 }
@@ -58,15 +58,18 @@ function getLinkFunction($http, theme, util, type) {
                 tooltip: util.getTooltip(data, config, type),
                 legend: util.getLegend(data, config, type),
                 toolbox: angular.extend({ show: false }, angular.isObject(config.toolbox) ? config.toolbox : {}),
-                xAxis: util.isHeatmapChart(type)? config.xAxis : [ angular.extend(xAxis, util.getAxisTicks(data, config, type)) ],
-                yAxis: util.isHeatmapChart(type)? config.yAxis :[ yAxis ],
+                xAxis: util.isHeatmapChart(type) ? config.xAxis : [angular.extend(xAxis, util.getAxisTicks(data, config, type))],
+                yAxis: util.isHeatmapChart(type) ? config.yAxis : [yAxis],
                 graphic: config.graphic && (angular.isObject(config.graphic) || angular.isArray(config.graphic)) ? config.graphic : [],
-                series: util.getSeries(data, config, type),
-                visualMap: config.visualMap ? config.visualMap : null
+                series: config.series ? config.series : util.getSeries(data, config, type),
+                visualMap: config.visualMap ? config.visualMap : null,
+                //support global font style for the chart
+                //see https://ecomfe.github.io/echarts-doc/public/en/option.html#textStyle
+                textStyle: config.textStyle ? config.textStyle : undefined
             };
 
             if (!config.showXAxis) {
-                angular.forEach(options.xAxis, function (axis) {
+                angular.forEach(options.xAxis, function(axis) {
                     axis.axisLine = { show: false };
                     axis.axisLabel = { show: false };
                     axis.axisTick = { show: false };
@@ -74,7 +77,7 @@ function getLinkFunction($http, theme, util, type) {
             }
 
             if (!config.showYAxis) {
-                angular.forEach(options.yAxis, function (axis) {
+                angular.forEach(options.yAxis, function(axis) {
                     axis.axisLine = { show: false };
                     axis.axisLabel = { show: false };
                     axis.axisTick = { show: false };
@@ -92,8 +95,8 @@ function getLinkFunction($http, theme, util, type) {
 
             if (config.dataZoom) {
                 options.dataZoom = angular.extend({
-                    show : true,
-                    realtime : true
+                    show: true,
+                    realtime: true
                 }, config.dataZoom);
             }
 
@@ -134,10 +137,10 @@ function getLinkFunction($http, theme, util, type) {
                 }
 
                 if (Array.isArray(scope.config.event)) {
-                    scope.config.event.forEach(function (ele) {
-                        if(!chartEvent[ele.type]) {
+                    scope.config.event.forEach(function(ele) {
+                        if (!chartEvent[ele.type]) {
                             chartEvent[ele.type] = true;
-                            chart.on(ele.type, function (param) {
+                            chart.on(ele.type, function(param) {
                                 ele.fn(param);
                             });
                         }
@@ -154,7 +157,7 @@ function getLinkFunction($http, theme, util, type) {
                 chart.showLoading({ text: scope.config.loading || '奋力加载中...', textStyle: textStyle });
 
                 // fire data request
-                $http.get(scope.data).then(function (response) {
+                $http.get(scope.data).then(function(response) {
                     isAjaxInProgress = false;
                     chart.hideLoading();
 
@@ -174,7 +177,7 @@ function getLinkFunction($http, theme, util, type) {
                     }
                 });
 
-            // if data is avaliable, render immediately
+                // if data is avaliable, render immediately
             } else {
                 options = getOptions(scope.data, scope.config, type);
                 if (scope.config.forceClear) {
@@ -191,11 +194,11 @@ function getLinkFunction($http, theme, util, type) {
         }
 
         // update when charts config changes
-        scope.$watch(function () { return scope.config; }, function (value) {
+        scope.$watch(function() { return scope.config; }, function(value) {
             if (value) { setOptions(); }
         }, true);
 
-        scope.$watch(function () { return scope.data; }, function (value) {
+        scope.$watch(function() { return scope.data; }, function(value) {
             if (value) { setOptions(); }
         }, true);
 
@@ -208,8 +211,8 @@ function getLinkFunction($http, theme, util, type) {
 var app = angular.module('angular-echarts', ['angular-echarts.theme', 'angular-echarts.util']);
 var types = ['line', 'bar', 'area', 'pie', 'donut', 'gauge', 'map', 'radar', 'heatmap'];
 for (var i = 0, n = types.length; i < n; i++) {
-    (function (type) {
-        app.directive(type + 'Chart', ['$http', 'theme', 'util', function ($http, theme, util) {
+    (function(type) {
+        app.directive(type + 'Chart', ['$http', 'theme', 'util', function($http, theme, util) {
             return {
                 restrict: 'EA',
                 template: '<div config="config" data="data"></div>',
@@ -223,4 +226,3 @@ for (var i = 0, n = types.length; i < n; i++) {
         }]);
     })(types[i]);
 }
-

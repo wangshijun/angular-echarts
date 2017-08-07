@@ -44,11 +44,14 @@ function getLinkFunction($http, theme, util, type) {
                     tooltip: util.getTooltip(data, config, type),
                     legend: util.getLegend(data, config, type),
                     toolbox: angular.extend({ show: false }, angular.isObject(config.toolbox) ? config.toolbox : {}),
-                    xAxis: util.isHeatmapChart(type) ? config.xAxis : [ angular.extend(xAxis, util.getAxisTicks(data, config, type)) ],
-                    yAxis: util.isHeatmapChart(type) ? config.yAxis : [ yAxis ],
+                    xAxis: util.isHeatmapChart(type) ? config.xAxis : [angular.extend(xAxis, util.getAxisTicks(data, config, type))],
+                    yAxis: util.isHeatmapChart(type) ? config.yAxis : [yAxis],
                     graphic: config.graphic && (angular.isObject(config.graphic) || angular.isArray(config.graphic)) ? config.graphic : [],
-                    series: util.getSeries(data, config, type),
-                    visualMap: config.visualMap ? config.visualMap : null
+                    series: config.series ? config.series : util.getSeries(data, config, type),
+                    visualMap: config.visualMap ? config.visualMap : null,
+                    //support global font style for the chart
+                    //see https://ecomfe.github.io/echarts-doc/public/en/option.html#textStyle
+                    textStyle: config.textStyle ? config.textStyle : undefined
                 };
             if (!config.showXAxis) {
                 angular.forEach(options.xAxis, function (axis) {
@@ -196,7 +199,7 @@ var app = angular.module('angular-echarts', ['angular-echarts.theme', 'angular-e
 var types = ['line', 'bar', 'area', 'pie', 'donut', 'gauge', 'map', 'radar', 'heatmap'];
 for (var i = 0, n = types.length; i < n; i++) {
     (function (type) {
-        app.directive(type + 'Chart', ['$http', 'theme', 'util', function ($http, theme, util) {
+        app.directive(type + 'Chart', ['$http', 'theme', 'util', function($http, theme, util) {
                     return {
                         restrict: 'EA',
                         template: '<div config="config" data="data"></div>',
@@ -210,6 +213,147 @@ for (var i = 0, n = types.length; i < n; i++) {
                 }]);
     }(types[i]));
 }
+'use strict';
+/**
+ * simple echarts directive
+ * Merge of concepts from https://github.com/liekkas/ng-echarts & 
+ * https://github.com/wangshijun/angular-echarts
+ * @author lykmapipo <https://github.com/lykmapipo>
+ * //TODO support $http
+ * //TODO add basic charts shortcuts
+ */
+angular.module('angular-echarts').directive('echart', [function() {
+        return {
+            restrict: 'EA',
+            template: '<div config="config" options="options"></div>',
+            scope: {
+                options: '=options',
+                config: '=config',
+                chartObj: '=?chartObj'
+            },
+            link: function link(scope, element, attrs, ctrl) {
+
+                //globals
+                var chartDOM = element.find('div')[0];
+                var parent = element.parent()[0];
+                var parentWidth = parent.clientWidth;
+                var parentHeight = parent.clientHeight;
+                var width = parseInt(attrs.width) || parentWidth || 320;
+                var height = parseInt(attrs.height) || parentHeight || 240;
+
+                //ensure config
+                var config = scope.config || {};
+
+                //reference chart
+                var chart;
+
+                /**
+                 * Update or create a echart based on scope config
+                 * and options
+                 */
+                function refreshChart() {
+
+                    var theme = (scope.config && scope.config.theme) ?
+                        scope.config.theme : 'shine';
+
+                    //compute chart width & height
+                    width = (config.width || width);
+                    height = (config.height || height);
+
+                    //ensure width & height
+                    config = angular.extend({
+                        width: width,
+                        height: height
+                    }, scope.config);
+
+                    //ensure chart dom height & width
+                    chartDOM.style.width = config.width + 'px';
+                    chartDOM.style.height = config.height + 'px';
+
+                    if (!chart) {
+                        chart = echarts.init(chartDOM, theme);
+                    }
+
+                    //TODO handle remote data loading
+                    //using url and promise
+
+                    //force clear chart if so
+                    if (config.forceClear) {
+                        chart.clear();
+                    }
+
+                    if (config && scope.options) {
+                        chart.setOption(scope.options);
+                        chart.resize();
+                        chart.hideLoading();
+                    }
+
+                    if (config && config.event) {
+
+                        //normalize event config
+                        if (!Array.isArray(config.event)) {
+                            config.event = [config.event];
+                        }
+
+                        //bind chart events
+                        if (angular.isArray(config.event)) {
+                            angular.forEach(config.event, function(value, key) {
+                                for (var e in value) {
+                                    chart.on(e, value[e]);
+                                }
+                            });
+                        }
+                    }
+                };
+
+                //watch config and update chart
+                //see https://docs.angularjs.org/api/ng/type/$rootScope.Scope#$watch
+                //see https://www.sitepoint.com/mastering-watch-angularjs/
+                var unwatchConfig = scope.$watch(
+                    function() { //expression
+                        return scope.config;
+                    },
+                    function(value) { //listener
+                        if (value) {
+                            refreshChart();
+                        }
+                    },
+                    true // perfom deep comparison
+                );
+
+                //watch options and update chart
+                //see https://docs.angularjs.org/api/ng/type/$rootScope.Scope#$watch
+                //see https://www.sitepoint.com/mastering-watch-angularjs/
+                var unwatchOptions = scope.$watch(
+                    function() { //expression
+                        return scope.options;
+                    },
+                    function(value) { //listener
+                        if (value) {
+                            refreshChart();
+                        }
+                    },
+                    true // perfom deep comparison
+                );
+
+                //de-register listeners on scope destroy
+                scope.$on('$destroy', function deregister() {
+
+                    //de-register config watch
+                    if (unwatchConfig) {
+                        unwatchConfig();
+                    }
+
+                    //de-register options watch
+                    if (unwatchOptions) {
+                        unwatchOptions();
+                    }
+
+                });
+
+            }
+        };
+    }]);
 'use strict';
 /**
  * util services
