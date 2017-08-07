@@ -130,3 +130,184 @@ Use this markup for a quick demo
 - [ ] Add chart provider with global configurations
 - [ ] Add support to the remaining charts i.e tree, treemap etc
 - [ ] Create chart widget with bootstrap style i.e panel
+
+## References
+- [https://ecomfe.github.io/echarts-doc/public/en/tutorial.html#Customerized%20Chart%20Styles](https://ecomfe.github.io/echarts-doc/public/en/tutorial.html#Customerized%20Chart%20Styles)
+
+## Implementations
+
+### Simple Bar Chart (simple-bar-chart)
+```js
+{
+    color: ['#3398DB', '#C8B1EF', '#263238', '#960F1E', '#06C947'],
+    tooltip : {
+        trigger: 'axis',
+        axisPointer : {       
+            type : 'shadow'
+        }
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    xAxis : [
+        {
+            type : 'category',
+            data : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+            axisTick: {
+                alignWithLabel: true
+            }
+        }
+    ],
+    yAxis : [
+        {
+            type : 'value'
+        }
+    ],
+    series : [
+        {
+            name:'直接访问',
+            type:'bar',
+            barWidth: '60%',
+            data:[
+                    {
+                        name:'', 
+                        value:10, 
+                        itemStyle:{
+                            normal:{
+                                color: '#3398DB'
+                            }
+                        }
+                    }, 
+                    {
+                        name:'', 
+                        value:52,
+                        itemStyle:{
+                            normal:{
+                                color: '#960F1E'
+                            }
+                        }
+                        
+                    },
+                    {
+                        name:'', 
+                        value:200,
+                        itemStyle:{
+                            normal:{
+                                color: '#263238'
+                            }
+                        }
+                    }, 
+                    {
+                        name:'', 
+                        value:334,
+                        itemStyle:{
+                            normal:{
+                                color: '#06C947'
+                            }
+                        }
+                    }, 
+                    {
+                        name:'', 
+                        value:39,
+                        itemStyle:{
+                            normal:{
+                                color: '#C8B1EF'
+                            }
+                        }
+                    }
+                ]
+        }
+    ]
+};
+```
+
+## Inverted Simple Bar Chart (simple-bar-chart)
+```js
+{
+    color: ['#3398DB', '#C8B1EF', '#263238', '#960F1E', '#06C947'],
+    tooltip : {
+        trigger: 'axis',
+        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+        }
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    yAxis : [
+        {
+            type : 'category',
+            data : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+            axisTick: {
+                alignWithLabel: true
+            }
+        }
+    ],
+    xAxis : [
+        {
+            type : 'value'
+        }
+    ],
+    series : [
+        {
+            name:'直接访问',
+            type:'bar',
+            barWidth: '60%',
+            data:[
+                    {
+                        name:'', 
+                        value:10, 
+                        itemStyle:{
+                            normal:{
+                                color: '#3398DB'
+                            }
+                        }
+                    }, 
+                    {
+                        name:'', 
+                        value:52,
+                        itemStyle:{
+                            normal:{
+                                color: '#960F1E'
+                            }
+                        }
+                        
+                    },
+                    {
+                        name:'', 
+                        value:200,
+                        itemStyle:{
+                            normal:{
+                                color: '#263238'
+                            }
+                        }
+                    }, 
+                    {
+                        name:'', 
+                        value:334,
+                        itemStyle:{
+                            normal:{
+                                color: '#06C947'
+                            }
+                        }
+                    }, 
+                    {
+                        name:'', 
+                        value:39,
+                        itemStyle:{
+                            normal:{
+                                color: '#C8B1EF'
+                            }
+                        }
+                    }
+                ]
+        }
+    ]
+};
+```
