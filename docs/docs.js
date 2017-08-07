@@ -33,6 +33,41 @@
         ]
     };
 
+    var firstMultiBar = {
+        name: 'first',
+        type: 'bar',
+        datapoints: [
+            { x: 2001, y: 22 },
+            { x: 2002, y: 13 },
+            { x: 2003, y: 35 },
+            { x: 2004, y: 52 },
+            { x: 2005, y: 32 },
+            { x: 2006, y: 40 },
+            { x: 2007, y: 63 },
+            { x: 2008, y: 80 },
+            { x: 2009, y: 20 },
+            { x: 2010, y: 25 }
+        ]
+    };
+
+    var secondMultiBar = {
+        name: 'second',
+        type: 'bar',
+        datapoints: [
+            { x: 2001, y: 22 },
+            { x: 2002, y: 13 },
+            { x: 2003, y: 35 },
+            { x: 2004, y: 52 },
+            { x: 2005, y: 32 },
+            { x: 2006, y: 40 },
+            { x: 2007, y: 63 },
+            { x: 2008, y: 80 },
+            { x: 2009, y: 20 },
+            { x: 2010, y: 25 }
+        ]
+    };
+
+
     function updateData($interval) {
         $interval(function() {
             pageload.datapoints.push({ x: pageload.datapoints[pageload.datapoints.length - 1].x + 1, y: Math.round(Math.random() * 2000) });
@@ -77,6 +112,23 @@
 
         $scope.data = [pageload];
         $scope.multiple = [pageload, firstPaint];
+
+    });
+
+    //multi bar chart with support for additional options
+    //see https://ecomfe.github.io/echarts-examples/public/editor.html?c=bar1
+    //see https://ecomfe.github.io/echarts-examples/public/editor.html?c=bar-y-category
+    app.controller('MultiBarChartController', function($scope) {
+
+        $scope.config = {
+            title: 'Multi Bar Chart',
+            subtitle: 'Multi Bar Chart Subtitle',
+            debug: true,
+            stack: false
+        };
+
+        $scope.data = [firstMultiBar];
+        $scope.multiple = [firstMultiBar, secondMultiBar];
 
     });
 
