@@ -263,10 +263,11 @@ angular.module('angular-echarts.util', []).factory('util', function () {
                     name: serie.name,
                     data: datapoints
                 };
+            conf = angular.extend(conf, serie);
             // area chart is actually line chart with special itemStyle
             if (type === 'area') {
                 conf.type = 'line';
-                conf.itemStyle = { normal: { areaStyle: { type: 'default' } } };
+                conf.itemStyle = conf.itemStyle || { normal: { areaStyle: { type: 'default' } } };
             }
             // gauge chart need many special config
             if (type === 'gauge') {
