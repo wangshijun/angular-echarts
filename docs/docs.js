@@ -77,6 +77,28 @@
 
     });
 
+    app.controller('HorizontalBarChartController', function ($scope) {
+
+        $scope.config = {
+            title: 'Bar Chart',
+            subtitle: 'Bar Chart Subtitle',
+            debug: true,
+            stack: true,
+            xAxis: {
+                type: 'value',
+                min: 0
+            },
+            yAxis: {
+                type: 'category',
+                data: []
+            }
+        };
+
+        $scope.data = [ pageload ];
+        $scope.multiple = [pageload, firstPaint ];
+
+    });
+
     app.controller('AreaChartController', function ($scope) {
 
         $scope.config = {

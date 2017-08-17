@@ -13,7 +13,7 @@
     <script src="vendor/echarts/dist/echarts.js"></script>
     <script src="docs/china.js"></script>
     <script src="vendor/angular/angular.min.js"></script>
-    <!-- <script src="../dist/angular&#45;echarts.min.js"></script> -->
+    <!-- <script src="../dist/angular-echarts.min.js"></script> -->
     <script src="src/directive.js"></script>
     <script src="src/util.js"></script>
     <script src="src/theme.js"></script>
@@ -40,6 +40,12 @@
 
     <h3 class="page-header">Bar Chart</h3>
     <div ng-controller="BarChartController">
+        <bar-chart config="config" data="data"></bar-chart>
+        <bar-chart config="config" data="multiple"></bar-chart>
+    </div>
+
+    <h3 class="page-header">Horizontal Bar Chart</h3>
+    <div ng-controller="HorizontalBarChartController">
         <bar-chart config="config" data="data"></bar-chart>
         <bar-chart config="config" data="multiple"></bar-chart>
     </div>
