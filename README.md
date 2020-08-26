@@ -1,6 +1,6 @@
 # eCharts + AngularJS
 
-AngularJS directives to use [eCharts](http://ecomfe.github.io/echarts/index-en.html)
+AngularJS directives to use [Apache ECharts (incubating)](http://ecomfe.github.io/echarts/index-en.html)
 
 ## Prerequisites
 
